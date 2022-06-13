@@ -14,6 +14,13 @@ const userRoute: IRoute[] = [
       controller: UserController,
       action: "register",
     },
+
+    {
+      method: "post",
+      route: "/login",
+      controller: UserController,
+      action: "login",
+    },
   ];
 
 const Routes: IRoute[] = [].concat(userRoute);

@@ -37,7 +37,21 @@ export class UserService implements IUserService {
     }
 
     async login(username: string, password: string): Promise<ITokens> {
-        throw new Error("Method not implemented.");
+        const user = await this.userRepository.findOne({
+            where: [
+                {username}
+            ]
+        })
+        
+        if(!user) throw new Error('User not found')
+
+        const passwordmatches = await bcrypt.compare(password, user.hashPassword)
+        if(!passwordmatches) throw new Error('Password not matches')
+
+        const tokens = await this.getTokens(user.username, user.role)
+        await this.updateRefreshTokenHash(user.username, tokens.refreshToken)
+
+        return tokens
     }
     
     private async getTokens(username: string, role: string): Promise<ITokens> {
