@@ -16,6 +16,4 @@ export class UserController {
         const body: LoginBodyDto = request.body
         return await this.userService.login(body.username, body.password)
     }
-
-
 }

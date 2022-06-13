@@ -5,6 +5,7 @@ interface IRoute {
   route: string;
   controller: any;
   action: string;
+  role: string | null;
 }
 
 const userRoute: IRoute[] = [
@@ -13,6 +14,7 @@ const userRoute: IRoute[] = [
       route: "/register",
       controller: UserController,
       action: "register",
+      role: null,
     },
 
     {
@@ -20,6 +22,7 @@ const userRoute: IRoute[] = [
       route: "/login",
       controller: UserController,
       action: "login",
+      role: null
     },
   ];
 
