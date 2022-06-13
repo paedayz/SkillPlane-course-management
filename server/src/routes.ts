@@ -1,23 +1,23 @@
-import { UserController } from "./controller/UserController"
+import { UserController } from "./controller/User.controller";
 
-export const Routes = [{
-    method: "get",
-    route: "/users",
-    controller: UserController,
-    action: "all"
-}, {
-    method: "get",
-    route: "/users/:id",
-    controller: UserController,
-    action: "one"
-}, {
-    method: "post",
-    route: "/users",
-    controller: UserController,
-    action: "save"
-}, {
-    method: "delete",
-    route: "/users/:id",
-    controller: UserController,
-    action: "remove"
-}]
+interface IRoute {
+  method: string;
+  route: string;
+  controller: any;
+  action: string;
+}
+
+const userRoute: IRoute[] = [
+    {
+      method: "post",
+      route: "/register",
+      controller: UserController,
+      action: "register",
+    },
+  ];
+
+const Routes: IRoute[] = [].concat(userRoute);
+
+export default Routes
+
+
