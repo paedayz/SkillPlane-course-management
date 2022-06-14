@@ -1,6 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { Course } from "../entity/Course.entity";
-import { FirebaseApp } from "../firebase/firebase-app";
+import { firebaseApp, FirebaseApp } from "../firebase/firebase-app";
 import { StorageFileDto, StorageService } from "../firebase/storage.service";
 import { ICourseService, IResCourseDetail } from "../interfaces";
 
@@ -9,11 +9,27 @@ export class CourseService implements ICourseService {
   private storage: StorageService;
 
     constructor() {
-        const firebaseApp = new FirebaseApp()
         this.storage = new StorageService(firebaseApp)
     }
-  deleteCourse(username: string, courseId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async deleteCourse(username: string, courseId: number): Promise<string> {
+    try {
+      const courseData = await this.courseRepository.findOneBy({id: courseId})
+
+      if(!courseData) throw Error('Course not found')
+
+      if(courseData.createdBy !== username) throw Error('No permission')
+
+      const allPromise = [
+        this.courseRepository.delete({id: courseId}),
+        this.storage.deleteSingleFile(courseData.image)
+      ]
+
+      const returnData = await Promise.all(allPromise)
+      return 'Delete success'
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
     
   async createCrouse(
@@ -46,7 +62,7 @@ export class CourseService implements ICourseService {
         ...courseDetail
       }
     } catch (error) {
-      
+      throw new Error(error.message);
     }
   }
   getCourses(

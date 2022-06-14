@@ -10,42 +10,47 @@ interface IRoute {
 }
 
 const userRoute: IRoute[] = [
-    {
-      method: "post",
-      route: "/register",
-      controller: UserController,
-      action: "register",
-      role: null,
-    },
+  {
+    method: "post",
+    route: "/register",
+    controller: UserController,
+    action: "register",
+    role: null,
+  },
 
-    {
-      method: "post",
-      route: "/login",
-      controller: UserController,
-      action: "login",
-      role: null
-    },
+  {
+    method: "post",
+    route: "/login",
+    controller: UserController,
+    action: "login",
+    role: null,
+  },
 
-    {
-      method: "post",
-      route: "/refreshToken",
-      controller: UserController,
-      action: "refreshToken",
-      role: null
-    },
-  ];
+  {
+    method: "post",
+    route: "/refreshToken",
+    controller: UserController,
+    action: "refreshToken",
+    role: null,
+  },
+];
 
 const courseRoute: IRoute[] = [
   {
     method: "post",
-      route: "/course",
-      controller: CourseController,
-      action: "createCourse",
-      role: 'admin',
-  }
-]
+    route: "/course",
+    controller: CourseController,
+    action: "createCourse",
+    role: "admin",
+  },
+  {
+    method: "delete",
+    route: "/course/:courseId",
+    controller: CourseController,
+    action: "deleteCourse",
+    role: "admin",
+  },
+];
 const Routes: IRoute[] = [].concat(userRoute, courseRoute);
 
-export default Routes
-
-
+export default Routes;

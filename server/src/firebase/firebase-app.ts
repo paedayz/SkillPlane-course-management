@@ -18,3 +18,5 @@ export class FirebaseApp {
     return this.firebaseApp.storage();
   };
 }
+
+export const firebaseApp = new FirebaseApp()

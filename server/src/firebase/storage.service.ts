@@ -32,9 +32,34 @@ export class StorageService {
         }
       }
 
+      async deleteSingleFile(path: string): Promise<string> {
+        try {
+          const storageFilePath = this.getStoragePath(path)
+          let res = await this.storage
+            .bucket(this.bucket)
+            .file(storageFilePath)
+            .delete({ ignoreNotFound: true })
+            .then((res) => {
+              return 'File Deleted';
+            })
+            .catch((err) => {
+              throw new Error(err?.message);
+            });
+    
+          return res;
+        } catch (error) {
+          throw new Error(error?.message);
+        }
+      }
+
       private getReturnPath(path: string) {
-        
         const storageFilePath = path.replace(/\//g, '%2F');
         return `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.project_id}.appspot.com/o/${storageFilePath}?alt=media`;
+      }
+
+      private getStoragePath(path: string) {
+        let storageFilePath = path.replace(`https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.project_id}.appspot.com/o/`, '')
+        storageFilePath = storageFilePath.replace(`?alt=media`, '')
+        return storageFilePath
       }
 }

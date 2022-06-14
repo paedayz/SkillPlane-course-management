@@ -6,8 +6,6 @@ import Routes from "./routes";
 import AuthMiddleware from "./middleware/Auth.middleware";
 import { upload } from "./middleware/Multer.middleware";
 
-
-
 AppDataSource.initialize()
   .then(async () => {
     // create express app

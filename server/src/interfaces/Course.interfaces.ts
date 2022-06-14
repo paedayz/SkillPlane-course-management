@@ -21,8 +21,8 @@ export interface ICourseService {
 
   deleteCourse(
     username: string,
-    courseId: string,
-  ) : Promise<void>
+    courseId: number,
+  ) : Promise<string>
 }
 
 export interface IResCourseDetail {

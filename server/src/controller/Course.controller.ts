@@ -10,8 +10,8 @@ export class CourseController {
     
 
     async createCourse(request: Request, response: Response, next: NextFunction): Promise<IResCourseDetail> {
-        
         let createCourseData: CreateCourseBodyDto = request.body
+
         createCourseData.image = {
             buffer: request.file?.buffer,
             originalName: request.file?.originalname
@@ -28,6 +28,15 @@ export class CourseController {
             parseInt(createCourseData.numberOfStudent),
             request['user'].username,
         )
+    }
+
+    async deleteCourse(request: Request, response: Response, next: NextFunction): Promise<string> {
+        if(!request.params.courseId) throw Error('Course id not found')
+
+        const username = request['user'].username
+        const courseId = parseInt(request.params.courseId)
+        
+        return this.courseService.deleteCourse(username, courseId)
     }
 
     
