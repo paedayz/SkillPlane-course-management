@@ -25,7 +25,8 @@ export class CourseController {
             createCourseData.subject,
             createCourseData.startTime,
             createCourseData.endTime,
-            parseInt(createCourseData.numberOfStudent)
+            parseInt(createCourseData.numberOfStudent),
+            request['user'].username,
         )
     }
 

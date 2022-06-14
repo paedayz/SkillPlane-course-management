@@ -16,9 +16,13 @@ export default async (req: Request, res: Response, next: NextFunction, expectRol
       }
     
     let decoded: {username: string, role: string, exp: number} = await jwt_decode(token)
-    if(decoded.exp < Date.now()) {
+
+    if(Date.now() >= decoded.exp * 1000) {
       return res.status(403).json({ error: "Access Token Expired" });
     }
+
+    req['user'] = decoded
+
     if(expectRole === 'admin' && decoded.role === 'admin') next()
     else if (expectRole === 'user' && (decoded.role === 'user' || decoded.role === 'admin')) next()
     else return res.status(403).json({ error: "No permission" });

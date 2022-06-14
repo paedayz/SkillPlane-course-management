@@ -30,6 +30,9 @@ export class Course {
     @Column()
     numberOfStudent: number
 
+    @Column()
+    createdBy: string
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 }

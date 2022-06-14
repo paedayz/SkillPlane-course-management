@@ -9,7 +9,8 @@ export interface ICourseService {
     subject: string,
     startTime: string,
     endTime: string,
-    numberOfStudent: number
+    numberOfStudent: number,
+    createdBy: string,
   ): Promise<IResCourseDetail>;
 
   getCourses(
@@ -17,6 +18,11 @@ export interface ICourseService {
     page?: number,
     offset?: number,
   ) : Promise<IResCourseDetail[]>
+
+  deleteCourse(
+    username: string,
+    courseId: string,
+  ) : Promise<void>
 }
 
 export interface IResCourseDetail {
