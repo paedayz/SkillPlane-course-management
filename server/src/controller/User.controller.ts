@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { User } from "../entity/User"
-import { AppDataSource } from "../data-source"
-import { UserService } from "../service/User.service"
 import { LoginBodyDto, RegisterBodyDto } from "../dto"
+import { UserService } from "../service"
 
 export class UserController {
     private userService = new UserService()

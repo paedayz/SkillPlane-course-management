@@ -1,3 +1,4 @@
+import { CourseController } from "./controller";
 import { UserController } from "./controller/User.controller";
 
 interface IRoute {
@@ -26,7 +27,16 @@ const userRoute: IRoute[] = [
     },
   ];
 
-const Routes: IRoute[] = [].concat(userRoute);
+const courseRoute: IRoute[] = [
+  {
+    method: "post",
+      route: "/course",
+      controller: CourseController,
+      action: "createCourse",
+      role: 'admin',
+  }
+]
+const Routes: IRoute[] = [].concat(userRoute, courseRoute);
 
 export default Routes
 

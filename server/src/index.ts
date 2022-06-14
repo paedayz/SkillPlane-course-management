@@ -4,10 +4,12 @@ import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "./data-source";
 import Routes from "./routes";
 import AuthMiddleware from "./middleware/Auth.middleware";
+import { upload } from "./middleware/Multer.middleware";
+
+
 
 AppDataSource.initialize()
   .then(async () => {
-
     // create express app
     const app = express();
     app.use(bodyParser.json());
@@ -18,6 +20,7 @@ AppDataSource.initialize()
         route.route,
         (req: Request, res: Response, next: NextFunction) =>
           AuthMiddleware(req, res, next, route.role),
+        upload.single("file"),
         (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
             req,
