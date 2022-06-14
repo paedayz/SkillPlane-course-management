@@ -8,3 +8,8 @@ export class LoginBodyDto {
     username: string;
     password: string;
 }
+
+export class RefreshTokenBodyDto {
+    username: string;
+    refreshToken: string;
+}

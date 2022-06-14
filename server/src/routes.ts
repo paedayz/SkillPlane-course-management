@@ -25,6 +25,14 @@ const userRoute: IRoute[] = [
       action: "login",
       role: null
     },
+
+    {
+      method: "post",
+      route: "/refreshToken",
+      controller: UserController,
+      action: "refreshToken",
+      role: null
+    },
   ];
 
 const courseRoute: IRoute[] = [

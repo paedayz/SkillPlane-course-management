@@ -53,6 +53,27 @@ export class UserService implements IUserService {
 
         return tokens
     }
+
+    async refreshToken(refreshToken: string, username: string): Promise<ITokens> {
+        try {
+            const user = await this.userRepository.findOne({
+                where: {
+                    username 
+                }
+            })
+            if(!user || !user.hashRefreshToken || !refreshToken) throw new Error('Access Denied')
+
+            const rtMatches = await bcrypt.compare(refreshToken, user.hashRefreshToken)
+            if(!rtMatches) throw new Error('Access Denied')
+
+            const tokens = await this.getTokens(user.username, user.role)
+            await this.updateRefreshTokenHash(user.username, tokens.refreshToken)
+
+            return tokens
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
     
     private async getTokens(username: string, role: string): Promise<ITokens> {
         const [at, rt] = await Promise.all([
