@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import jwt_decode from 'jwt-decode'
 
 export default async (req: Request, res: Response, next: NextFunction, expectRole:string) => {
-    let token: string
     if(!expectRole) return next()
 
+    let token: string
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith("Bearer ")
@@ -15,8 +15,10 @@ export default async (req: Request, res: Response, next: NextFunction, expectRol
         return res.status(403).json({ error: "Unauthorized" });
       }
     
-    let decoded: {username: string, role: string} = await jwt_decode(token)
-
+    let decoded: {username: string, role: string, exp: number} = await jwt_decode(token)
+    if(decoded.exp < Date.now()) {
+      return res.status(403).json({ error: "Access Token Expired" });
+    }
     if(expectRole === 'admin' && decoded.role === 'admin') next()
     else if (expectRole === 'user' && (decoded.role === 'user' || decoded.role === 'admin')) next()
     else return res.status(403).json({ error: "No permission" });
