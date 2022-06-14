@@ -20,13 +20,14 @@ export interface ICourseService {
 }
 
 export interface IResCourseDetail {
+  id: number;
   name: string;
   description: string;
   category: string;
   image: string;
   subject: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   numberOfStudent: number;
   createdAt: Date;
 }

@@ -20,7 +20,7 @@ AppDataSource.initialize()
         route.route,
         (req: Request, res: Response, next: NextFunction) =>
           AuthMiddleware(req, res, next, route.role),
-        upload.single("file"),
+        upload.single("image"),
         (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
             req,

@@ -1,9 +1,19 @@
-import { StorageFileDto } from "../firebase/storage.service";
+import { AppDataSource } from "../data-source";
+import { Course } from "../entity/Course.entity";
+import { FirebaseApp } from "../firebase/firebase-app";
+import { StorageFileDto, StorageService } from "../firebase/storage.service";
 import { ICourseService, IResCourseDetail } from "../interfaces";
 
 export class CourseService implements ICourseService {
+  private courseRepository = AppDataSource.manager.getRepository(Course)
+  private storage: StorageService;
+
+    constructor() {
+        const firebaseApp = new FirebaseApp()
+        this.storage = new StorageService(firebaseApp)
+    }
     
-  createCrouse(
+  async createCrouse(
     name: string,
     description: string,
     category: string,
@@ -13,7 +23,26 @@ export class CourseService implements ICourseService {
     endTime: string,
     numberOfStudent: number
   ): Promise<IResCourseDetail> {
-    throw new Error("Method not implemented.");
+    try {
+      const storagePath = await this.storage.saveSingleFile(image)
+
+      const courseDetail = await this.courseRepository.save({
+        name,
+        description,
+        category,
+        image: storagePath,
+        subject,
+        numberOfStudent,
+        startTime,
+        endTime,
+      })
+
+      return {
+        ...courseDetail
+      }
+    } catch (error) {
+      
+    }
   }
   getCourses(
     keyword?: string,

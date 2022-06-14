@@ -1,5 +1,5 @@
 import { AppDataSource } from "../data-source";
-import { User } from "../entity/User";
+import { User } from "../entity/User.entity";
 import { ISaveUserEntity, ITokens, IUserService } from "../interfaces";
 import * as jwt from 'jsonwebtoken'
 import { at_secret, rt_secret } from "../../config";
