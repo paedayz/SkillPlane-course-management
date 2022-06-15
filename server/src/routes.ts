@@ -50,6 +50,13 @@ const courseRoute: IRoute[] = [
     action: "deleteCourse",
     role: "admin",
   },
+  {
+    method: "get",
+    route: "/course",
+    controller: CourseController,
+    action: "getCourses",
+    role: "user",
+  },
 ];
 const Routes: IRoute[] = [].concat(userRoute, courseRoute);
 

@@ -9,12 +9,15 @@ export interface ICourseService {
     subject: string,
     startTime: string,
     endTime: string,
+    duration: number,
     numberOfStudent: number,
     createdBy: string,
   ): Promise<IResCourseDetail>;
 
   getCourses(
     keyword?: string,
+    minDuration?: number,
+    maxDuration?: number,
     page?: number,
     offset?: number,
   ) : Promise<IResCourseDetail[]>
@@ -32,8 +35,9 @@ export interface IResCourseDetail {
   category: string;
   image: string;
   subject: string;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
+  duration: number;
   numberOfStudent: number;
   createdAt: Date;
 }

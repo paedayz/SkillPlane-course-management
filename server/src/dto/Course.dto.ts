@@ -7,6 +7,15 @@ export class CreateCourseBodyDto {
     image: StorageFileDto;
     subject: string;
     startTime: string;
+    duration: string;
     endTime: string;
     numberOfStudent: string;
+}
+
+export class GetCourseQueryDto {
+    keyword?: string;
+    minDuration?: string;
+    maxDuration?: string;
+    page?: string;
+    offset?: string;
 }

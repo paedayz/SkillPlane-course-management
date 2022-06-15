@@ -21,14 +21,17 @@ export class Course {
     @Column()
     subject: string
 
-    @Column()
-    startTime: string
+    @Column({type: 'timestamp'})
+    startTime: Date
 
-    @Column()
-    endTime: string
+    @Column({type: 'timestamp'})
+    endTime: Date
 
     @Column()
     numberOfStudent: number
+
+    @Column()
+    duration: number
 
     @Column()
     createdBy: string
