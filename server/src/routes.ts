@@ -6,7 +6,7 @@ interface IRoute {
   route: string;
   controller: any;
   action: string;
-  role: string | null;
+  role: "user" | "admin" | null;
 }
 
 const userRoute: IRoute[] = [
@@ -32,6 +32,14 @@ const userRoute: IRoute[] = [
     controller: UserController,
     action: "refreshToken",
     role: null,
+  },
+
+  {
+    method: "delete",
+    route: "/logout",
+    controller: UserController,
+    action: "logout",
+    role: "user",
   },
 ];
 

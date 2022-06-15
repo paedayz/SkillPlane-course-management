@@ -20,4 +20,8 @@ export class UserController {
         const body: RefreshTokenBodyDto = request.body
         return await this.userService.refreshToken(body.refreshToken, body.username)
     }
+
+    async logout(request: Request, response: Response, next: NextFunction): Promise<string> {
+        return await this.userService.logout(request['user'].username)
+    }
 }

@@ -6,6 +6,7 @@ import { at_secret, rt_secret } from "../../config";
 import * as bcrypt from 'bcrypt'
 
 export class UserService implements IUserService {
+    
     private userRepository = AppDataSource.manager.getRepository(User)
 
     async register(username: string, password: string, confirmPassword: string): Promise<ITokens> {
@@ -71,6 +72,20 @@ export class UserService implements IUserService {
 
             return tokens
         } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async logout(username: string): Promise<string> {
+        try {
+            await this.userRepository.update({
+                username
+            }, {
+                hashRefreshToken: null
+            })
+            return 'Logout successfully'
+        } catch (error) {
+            console.log(error.message)
             throw new Error(error.message)
         }
     }
