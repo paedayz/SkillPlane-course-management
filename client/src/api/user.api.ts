@@ -5,14 +5,14 @@ import { ITokens } from "../interfaces";
 export const login = async (
   username: string,
   password: string
-): Promise<ITokens | null> => {
+): Promise<ITokens | undefined> => {
   try {
     const res = await appAxios.post("/login", {
       username,
       password,
     });
 
-    if (!res.data) return null;
+    if (!res.data) return undefined;
 
     const tokens: ITokens = res.data;
     localStorage.setItem('skill-lane-accessToken', tokens.accessToken)
@@ -21,7 +21,7 @@ export const login = async (
     return tokens;
   } catch (error) {
     console.log(error);
-    return null;
+    return undefined;
   }
 };
 
@@ -29,7 +29,7 @@ export const register = async (
   username: string,
   password: string,
   confirmPassword: string
-): Promise<ITokens | null> => {
+): Promise<ITokens | undefined> => {
   try {
     const res = await appAxios.post("/register", {
       username,
@@ -37,7 +37,7 @@ export const register = async (
       confirmPassword,
     });
 
-    if (!res.data) return null;
+    if (!res.data) return undefined;
 
     const tokens: ITokens = res.data;
     localStorage.setItem('skill-lane-accessToken', tokens.accessToken)
@@ -46,11 +46,11 @@ export const register = async (
     return tokens;
   } catch (error) {
     console.log(error);
-    return null;
+    return undefined;
   }
 };
 
-export const logout = async (): Promise<string | null> => {
+export const logout = async (): Promise<string | undefined> => {
     try {
         const accessToken = await getAccessToken()
         const res = await appAxios.delete('/logout', {
@@ -59,12 +59,12 @@ export const logout = async (): Promise<string | null> => {
             }
         })
 
-        if(!res.data) return null;
+        if(!res.data) return undefined;
         localStorage.removeItem(LOCALSTORAGE_AC_TOKEN_KEY)
         localStorage.removeItem(LOCALSTORAGE_RF_TOKEN_KEY)
         return res.data
     } catch (error) {
         console.log(error)
-        return null
+        return undefined
     }
 }
