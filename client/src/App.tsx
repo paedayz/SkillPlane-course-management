@@ -7,7 +7,6 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import { useAppDispatch } from "./app/hooks";
 import { setCredentials } from "./slices/user.slice";
-import { useEffect } from "react";
 import AuthRoute from "./common/AuthRoute";
 
 function App() {

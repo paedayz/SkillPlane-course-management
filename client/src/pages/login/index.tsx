@@ -1,11 +1,76 @@
-import React from 'react'
+import { Button, Form, Input } from "antd";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-type Props = {}
+// styled
+const Container = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+`;
 
-function LoginPage({}: Props) {
-  return (
-    <div>LoginPage</div>
-  )
+const Title = styled.div`
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+interface IFormInput {
+  username?: string;
+  password?: string;
 }
 
-export default LoginPage
+type Props = {};
+
+function LoginPage({}: Props) {
+  const onFinish = (values: IFormInput) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+  return (
+    <Container>
+      <Title>Login</Title>
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+          <Link to="register">Register ?</Link>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </Container>
+  );
+}
+
+export default LoginPage;
