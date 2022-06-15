@@ -15,12 +15,12 @@ export interface ICourse {
     category: string;
     image: string;
     subject: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
     numberOfStudent: number;
     duration: number;
     createdBy: string;
-    createdAt: Date;
+    createdAt: string;
 }
 
 const initialState: IUserState = {
@@ -32,8 +32,6 @@ export const courseSlice = createSlice({
   initialState,
   reducers: {
     addCourse: (state, action) => {
-        console.log('payload')
-        console.log(action.payload)
         state.courses = ([] as ICourse[]).concat(state.courses, action.payload)
     }
   },

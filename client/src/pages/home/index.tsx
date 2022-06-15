@@ -1,11 +1,25 @@
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import CourseCard from "../../components/course/course.card";
 import EmptyComponent from "../../components/empty";
 import Navbar from "../../components/navbar";
 import { addCourse } from "../../slices/course.slice";
+
+// styled
+const Container = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+
+const CourseCardContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 70px;
+`;
 
 type Props = {};
 
@@ -45,7 +59,7 @@ function Homepage({}: Props) {
   const renderCourseCard =
     courses.length > 0 ? (
       courses.map((course) => {
-        return <div>{course.name}</div>;
+        return <CourseCard data={course} />;
       })
     ) : (
       <EmptyComponent description="No data" />
@@ -53,32 +67,17 @@ function Homepage({}: Props) {
 
   // useEffect
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
 
-  const MOCK_COURSE = {
-    id: 16,
-    name: "Flutter crash course",
-    description: "Build your mobile application easier with flutter",
-    category: "coding",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/fir-react-example-e2b28.appspot.com/o/1f51f2c9-fac8-4a65-a3fc-187dbdc2c29b.jpg?alt=media",
-    subject: "computer",
-    startTime: new Date("2022-06-19T17:00:00.000Z"),
-    endTime: new Date("2022-07-04T17:00:00.000Z"),
-    numberOfStudent: 20,
-    duration: 3600,
-    createdBy: "pae",
-    createdAt: new Date("2022-06-15T01:43:28.118Z"),
-  };
-
   return (
-    <div>
+    <Container>
       <Navbar />
-      <div>home</div>
-      <div>{!loading ? renderCourseCard : <Spin size="large" />}</div>
-      <CourseCard data={MOCK_COURSE} />
-    </div>
+      <CourseCardContainer>
+        {!loading ? renderCourseCard : <Spin size="large" />}
+      </CourseCardContainer>
+      <div style={{ marginBottom: "100px" }} />
+    </Container>
   );
 }
 

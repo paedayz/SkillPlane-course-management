@@ -27,7 +27,7 @@ export const getCourse = async (
     );
 
     if (!res.data) return undefined;
-
+  
     const courses: ICourse[] = res.data;
 
     return courses;

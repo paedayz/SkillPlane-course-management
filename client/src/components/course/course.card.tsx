@@ -5,6 +5,8 @@ import { ICourse } from "../../slices/course.slice";
 const Container = styled.div`
   width: 250px;
   height: 350px;
+  margin-bottom: 20px;
+  margin-right: 20px;
   background-color: transparent;
   font-family: "Kanit", sans-serif;
   cursor: pointer;
@@ -48,6 +50,13 @@ const FlipCardInner = styled.div`
 const CourseImage = styled.img`
   width: 230px;
   object-fit: cover;
+`;
+
+const CourseFlipImage = styled.img`
+  width: 230px;
+  object-fit: cover;
+  transform: scaleX(-1);
+  opacity: 50%;
 `;
 
 const CourseName = styled.div`
@@ -98,13 +107,13 @@ function CourseCard({ data }: Props) {
   const durationToString = (seconds: number): string => {
     seconds = Number(seconds);
     var h = Math.floor(seconds / 3600);
-    var m = Math.floor(seconds % 3600 / 60);
-    var s = Math.floor(seconds % 3600 % 60);
+    var m = Math.floor((seconds % 3600) / 60);
+    var s = Math.floor((seconds % 3600) % 60);
 
     var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
     var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-    return hDisplay + mDisplay + sDisplay; 
+    return hDisplay + mDisplay + sDisplay;
   };
 
   return (
@@ -116,14 +125,16 @@ function CourseCard({ data }: Props) {
           <CourseDescription>{description}</CourseDescription>
           <CourseRegisTimes>
             <div>Can register</div>
-            <div>since {startTime.toDateString()}</div>
-            <div>until {endTime.toDateString()}</div>
+            <div>since {new Date(startTime).toDateString()}</div>
+            <div>until {new Date(endTime).toDateString()}</div>
           </CourseRegisTimes>
         </div>
 
         <div className="flip-card-back">
-          <CourseImage src={image} />
-          <CourseDuration>Duration: {durationToString(duration)}</CourseDuration>
+          <CourseFlipImage src={image} />
+          <CourseDuration>
+            Duration: {durationToString(duration)}
+          </CourseDuration>
           <CourseDuration>Subject: {subject}</CourseDuration>
           <CourseDuration>Category: {category}</CourseDuration>
           <CourseDuration>Number of seat: {numberOfStudent}</CourseDuration>
