@@ -53,8 +53,8 @@ export class CourseController {
       params.keyword,
       parseInt(params.minDuration),
       parseInt(params.maxDuration),
-      parseInt(params.page),
-      parseInt(params.offset)
+      parseInt(params.take),
+      parseInt(params.skip)
     );
   }
 }

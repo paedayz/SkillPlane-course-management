@@ -18,8 +18,8 @@ export interface ICourseService {
     keyword?: string,
     minDuration?: number,
     maxDuration?: number,
-    page?: number,
-    offset?: number,
+    take?: number,
+    skip?: number,
   ) : Promise<IResCourseDetail[]>
 
   deleteCourse(

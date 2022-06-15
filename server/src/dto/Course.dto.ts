@@ -16,6 +16,6 @@ export class GetCourseQueryDto {
     keyword?: string;
     minDuration?: string;
     maxDuration?: string;
-    page?: string;
-    offset?: string;
+    take?: string;
+    skip?: string;
 }

@@ -81,14 +81,14 @@ export class CourseService implements ICourseService {
   ): Promise<IResCourseDetail[]> {
     try {
       const queryKeyword = keyword ? keyword.toLowerCase() : "";
-      const queryMinDuration = minDuration ? minDuration : 0;
-      const queryMaxDuration = maxDuration ? maxDuration : 90000000;
-      console.log(queryKeyword)
-      console.log(queryMinDuration)
-      console.log(queryMaxDuration)
+      const queryKeywordString = keyword ? '(LOWER(Course.name) LIKE :keyword OR LOWER(Course.description) LIKE :keyword)' : '';
 
-      let queryKeywordString = keyword ? '(LOWER(Course.name) LIKE :keyword OR LOWER(Course.description) LIKE :keyword)' : '';
+      const queryMinDuration = minDuration || 0;
+      const queryMaxDuration = maxDuration || 90000000;
       const queryDurationString = 'Course.duration BETWEEN :min AND :max'
+
+      const queryTake = take || 10;
+      const querySkip = skip || 0;
 
       const courses = await this.courseRepository
         .createQueryBuilder()
@@ -99,6 +99,8 @@ export class CourseService implements ICourseService {
           min: queryMinDuration,
           max: queryMaxDuration,
         })
+        .take(queryTake)
+        .skip(querySkip)
         .getMany();
 
       return courses;
