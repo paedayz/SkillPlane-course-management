@@ -1,6 +1,10 @@
 import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { login } from "../../api";
+import { useAppDispatch } from "../../app/hooks";
+import { setCredentials } from "../../slices/user.slice";
 
 // styled
 const Container = styled.div`
@@ -24,8 +28,20 @@ interface IFormInput {
 type Props = {};
 
 function LoginPage({}: Props) {
-  const onFinish = (values: IFormInput) => {
-    console.log("Success:", values);
+    const [loading, setLoading] = useState(false)
+    const dispatch = useAppDispatch()
+    const history = useHistory()
+  const onFinish = async (values: IFormInput) => {
+    if(values.username && values.password) {
+        setLoading(true)
+        const res = await login(values.username, values.password)
+        if(!res) return
+        dispatch(setCredentials())
+        history.push('/')
+    }
+
+    setLoading(false)
+    
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -64,7 +80,7 @@ function LoginPage({}: Props) {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-          <Button type="primary" htmlType="submit">
+          <Button disabled={loading} type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
