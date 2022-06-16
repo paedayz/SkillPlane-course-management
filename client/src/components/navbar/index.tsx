@@ -39,6 +39,10 @@ const RightContainer = styled.div`
   margin-left: auto;
   margin-right: 20px;
   justify-content: right;
+  @media ${device.lg} {
+    font-size: 10px;
+    justify-content: center;
+  }
 `;
 
 const Logo = styled.img`
@@ -52,12 +56,19 @@ const Logo = styled.img`
 `;
 
 const SearchBox = styled(Search)`
+  width: 250px;
   margin-right: 10px;
+  @media ${device.lg} {
+    width: 200px;
+  }
 `;
 
 const SliderContainer = styled.div`
   width: 300px;
   margin-right: 10px;
+  @media ${device.lg} {
+    width: 150px;
+  }
 `;
 
 const FilterContainer = styled.div`
@@ -68,6 +79,16 @@ const FilterContainer = styled.div`
   display: flex;
   margin-right: 20px;
 `;
+
+const LogoutButton = styled(Button)`
+  @media ${device.lg} {
+    font-size: 10px;
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    }
+  
+`
 
 type Props = {
   defalutKeyword: string | null;
@@ -212,7 +233,6 @@ function Navbar({
             placeholder="input search text"
             onChange={onChangeSearch}
             onSearch={() => onSearch()}
-            style={{ width: 200 }}
           />
 
           <Tooltip title="Clear filter">
@@ -224,9 +244,9 @@ function Navbar({
           </Tooltip>
         </FilterContainer>
 
-        <Button danger onClick={onclickLogout}>
+        <LogoutButton danger onClick={onclickLogout}>
           logout
-        </Button>
+        </LogoutButton>
       </RightContainer>
     </Container>
   );
