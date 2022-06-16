@@ -55,6 +55,9 @@ function Homepage({}: Props) {
 
   const [scrolling, setScrolling] = useState<number>(0);
 
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+
   // Redux
   const dispatch = useAppDispatch();
   const courses = useAppSelector((state) => state.course.courses);
@@ -66,8 +69,7 @@ function Homepage({}: Props) {
       skipRef.current,
       keywordRef.current,
       minDurationRef.current,
-      maxDurationRef.current,
-      
+      maxDurationRef.current
     );
 
     if (resCourse && resCourse.length !== 0) {
@@ -122,8 +124,6 @@ function Homepage({}: Props) {
   };
 
   const getSearchParams = () => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
     let takeParams = params.get("take");
     let skipParams = params.get("skip");
     let keywordParams = params.get("keyword");
@@ -176,7 +176,7 @@ function Homepage({}: Props) {
 
   return (
     <Container>
-      <Navbar />
+      <Navbar defalutKeyword={params.get("keyword")} defaultMinDuration={params.get("minDuration")} defaultMaxDuration={params.get("maxDuration")}/>
 
       <CourseCardContainer>
         {!initialLoading ? (

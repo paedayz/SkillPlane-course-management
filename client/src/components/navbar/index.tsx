@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Input, Slider, Tooltip } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { logout } from "../../api";
@@ -69,9 +69,17 @@ const FilterContainer = styled.div`
   margin-right: 20px;
 `;
 
-type Props = {};
+type Props = {
+  defalutKeyword: string | null;
+  defaultMinDuration: string | null;
+  defaultMaxDuration: string | null;
+};
 
-function Navbar({}: Props) {
+function Navbar({
+  defalutKeyword,
+  defaultMinDuration,
+  defaultMaxDuration,
+}: Props) {
   const history = useHistory();
   const params = new URLSearchParams();
 
@@ -88,7 +96,7 @@ function Navbar({}: Props) {
   const minDurationRef = useRef(minDuration);
 
   // useState
-  const [keywordState, setKeywordState] = useState('');
+  const [keywordState, setKeywordState] = useState("");
   const [maxDurationState, setMaxDurationState] = useState(0);
   const [minDurationState, setMinDurtaionState] = useState(0);
 
@@ -112,36 +120,15 @@ function Navbar({}: Props) {
     }
   };
 
-  const onSearch = async () => {
-    // // set keyword params
-    // if (keyword && keyword.length > 0) {
-    //   params.append("keyword", keyword);
-    // } else {
-    //   params.delete("keyword");
-    // }
-
-    // if (minDuration && minDuration !== 0) {
-    //   params.append("minDuration", minDuration.toString());
-    // } else {
-    //   params.delete("minDuration");
-    // }
-
-    // if (maxDuration && maxDuration !== 0) {
-    //   params.append("maxDuration", maxDuration.toString());
-    // } else {
-    //   params.delete("maxDuration");
-    // }
-
-    // history.push({ search: params.toString() });
-
+  const onSearch = async (isEmptyKeyword: boolean = false) => {
     dispatch(
       setQueryParams({
-        keyword: keywordState,
+        keyword: isEmptyKeyword ? undefined : keywordState,
         minDuration: minDurationRef.current,
         maxDuration: maxDurationRef.current,
       })
     );
-    keywordRef.current = keywordState;
+    keywordRef.current = isEmptyKeyword ? undefined : keywordState;
 
     dispatch(setInitialLoading(true));
     dispatch(resetBeforeQueryGet());
@@ -150,32 +137,11 @@ function Navbar({}: Props) {
   };
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeywordState(e.target.value)
-    if (e.target.value.length === 0) onSearch();
+    setKeywordState(e.target.value);
+    if (e.target.value.length === 0) onSearch(true);
   };
 
   const onSliderChange = (value: [number, number]) => {
-    // // set keyword params
-    // if (value[0] !== 0) {
-    //   params.append("minDuration", value[0].toString());
-    // } else {
-    //   params.delete("minDuration");
-    // }
-
-    // if (value[1] !== 0) {
-    //   params.append("maxDuration", value[1].toString());
-    // } else {
-    //   params.delete("maxDuration");
-    // }
-
-    // if (keyword) {
-    //   params.append("keyword", keyword);
-    // } else {
-    //   params.delete("keyword");
-    // }
-
-    // history.push({ search: params.toString() });
-
     setMinDurtaionState(value[0]);
     setMaxDurationState(value[1]);
   };
@@ -203,7 +169,7 @@ function Navbar({}: Props) {
 
     setMinDurtaionState(0);
     setMaxDurationState(0);
-    setKeywordState('')
+    setKeywordState("");
 
     dispatch(setQueryParams({}));
 
@@ -214,8 +180,12 @@ function Navbar({}: Props) {
   };
 
   const getSliderValue = (): [number, number] => {
-    const min = minDuration ? (minDuration / 3600) >> 0 : 0;
-    const max = maxDuration ? (maxDuration / 3600) >> 0 : 0;
+    const min = defaultMinDuration
+      ? (parseInt(defaultMinDuration) / 3600) >> 0
+      : 0;
+    const max = defaultMaxDuration
+      ? (parseInt(defaultMaxDuration) / 3600) >> 0
+      : 0;
     return [min, max];
   };
 
@@ -229,7 +199,6 @@ function Navbar({}: Props) {
             <div>Max-Min Hour</div>
             <Slider
               defaultValue={getSliderValue()}
-              value={[minDurationState, maxDurationState]}
               onChange={onSliderChange}
               onAfterChange={onAfterSliderChange}
               range
@@ -240,10 +209,10 @@ function Navbar({}: Props) {
           </SliderContainer>
 
           <SearchBox
-            value={keywordState}
+            defaultValue={defalutKeyword ? defalutKeyword : ""}
             placeholder="input search text"
             onChange={onChangeSearch}
-            onSearch={onSearch}
+            onSearch={() => onSearch()}
             style={{ width: 200 }}
           />
 
