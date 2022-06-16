@@ -41,13 +41,16 @@ function Homepage({}: Props) {
   );
   const take = useAppSelector((state) => state.course.take);
   const skip = useAppSelector((state) => state.course.skip);
+  const keyword = useAppSelector((state) => state.course.keyword);
+  const maxDuration = useAppSelector((state) => state.course.maxDuration);
+  const minDuration = useAppSelector((state) => state.course.minDuration);
+
   const skipRef = useRef(skip);
+  const keywordRef = useRef(keyword);
+  const maxDurationRef = useRef(maxDuration);
+  const minDurationRef = useRef(minDuration);
 
   const [scrolling, setScrolling] = useState<number>(0);
-
-  const setSkipRef = (data: number) => {
-    skipRef.current = data;
-  };
 
   // Redux
   const dispatch = useAppDispatch();
@@ -70,7 +73,13 @@ function Homepage({}: Props) {
     document.body.style.overflow = "hidden";
 
     setTimeout(async () => {
-      const resCourse = await getCourse(take, skipRef.current);
+      const resCourse = await getCourse(
+        take,
+        skipRef.current,
+        keywordRef.current,
+        minDurationRef.current,
+        maxDurationRef.current
+      );
 
       if (resCourse && resCourse.length !== 0) {
         dispatch(addCourse(resCourse));
@@ -108,7 +117,10 @@ function Homepage({}: Props) {
   }, []);
 
   useEffect(() => {
-    setSkipRef(skip);
+    skipRef.current = skip;
+    keywordRef.current = keyword;
+    minDurationRef.current = minDuration;
+    maxDurationRef.current = maxDuration;
 
     window.addEventListener("scroll", (e) => handleNavigation(e));
 
