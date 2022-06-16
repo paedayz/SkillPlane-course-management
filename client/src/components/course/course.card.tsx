@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { device } from "../../constants";
 import { ICourse } from "../../slices/course.slice";
 
 const Container = styled.div`
@@ -12,6 +13,12 @@ const Container = styled.div`
   cursor: pointer;
   user-select: none;
 
+  @media ${device.lg} {
+    width: 100%;
+    height: 200px;
+    display: flex;
+  }
+
   &:hover .flip-card-inner {
     transform: rotateY(180deg);
   }
@@ -23,6 +30,10 @@ const Container = styled.div`
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    @media ${device.lg} {
+      width: 100%;
+      display: flex;
+    }
   }
 
   .flip-card-front {
@@ -45,11 +56,21 @@ const FlipCardInner = styled.div`
   text-align: center;
   transition: transform 1.5s;
   transform-style: preserve-3d;
+  @media ${device.lg} {
+    width: 100%;
+    display: flex;
+  }
 `;
 
 const CourseImage = styled.img`
   width: 230px;
   object-fit: cover;
+  @media ${device.lg} {
+    height: 90%;
+    width: 300px;
+    margin-left: 10px;
+    border-radius: 10px;
+  }
 `;
 
 const CourseFlipImage = styled.img`
@@ -57,6 +78,12 @@ const CourseFlipImage = styled.img`
   object-fit: cover;
   transform: scaleX(-1);
   opacity: 50%;
+  @media ${device.lg} {
+    height: 90%;
+    width: 300px;
+    margin-left: 10px;
+    border-radius: 10px;
+  }
 `;
 
 const CourseName = styled.div`
@@ -72,17 +99,41 @@ const CourseDescription = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  @media ${device.lg} {
+    width: 65%;
+  }
 `;
 
 const CourseRegisTimes = styled.div`
   font-size: 10px;
   margin-top: 25px;
+  @media ${device.lg} {
+    text-align: right;
+    font-size: 13px;
+    margin-top: 0;
+  }
 `;
 
 const CourseDuration = styled.div`
   margin-top: 10px;
 `;
 
+const DetailContainer = styled.div`
+  @media ${device.lg} {
+    text-align: left;
+    margin-left: 20px;
+    width: 100%;
+    padding-right: 10px;
+  }
+`;
+const FlipDetailContainer = styled.div`
+  @media ${device.lg} {
+    text-align: left;
+    margin-left: 20px;
+    width: 100%;
+    padding-right: 10px;
+  }
+`;
 type Props = {
   data: ICourse;
 };
@@ -121,23 +172,27 @@ function CourseCard({ data }: Props) {
       <FlipCardInner className="flip-card-inner">
         <div className="flip-card-front">
           <CourseImage src={image} />
-          <CourseName>{name}</CourseName>
-          <CourseDescription>{description}</CourseDescription>
-          <CourseRegisTimes>
-            <div>Can register</div>
-            <div>since {new Date(startTime).toDateString()}</div>
-            <div>until {new Date(endTime).toDateString()}</div>
-          </CourseRegisTimes>
+          <DetailContainer>
+            <CourseName>{name}</CourseName>
+            <CourseDescription>{description}</CourseDescription>
+            <CourseRegisTimes>
+              <div>Can register</div>
+              <div>since {new Date(startTime).toDateString()}</div>
+              <div>until {new Date(endTime).toDateString()}</div>
+            </CourseRegisTimes>
+          </DetailContainer>
         </div>
 
         <div className="flip-card-back">
           <CourseFlipImage src={image} />
-          <CourseDuration>
-            Duration: {durationToString(duration)}
-          </CourseDuration>
-          <CourseDuration>Subject: {subject}</CourseDuration>
-          <CourseDuration>Category: {category}</CourseDuration>
-          <CourseDuration>Number of seat: {numberOfStudent}</CourseDuration>
+          <FlipDetailContainer>
+            <CourseDuration>
+              <b>Duration:</b> {durationToString(duration)}
+            </CourseDuration>
+            <CourseDuration><b>Subject:</b> {subject}</CourseDuration>
+            <CourseDuration><b>Category:</b> {category}</CourseDuration>
+            <CourseDuration><b>Number of seat:</b> {numberOfStudent}</CourseDuration>
+          </FlipDetailContainer>
         </div>
       </FlipCardInner>
     </Container>

@@ -7,6 +7,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import CourseCard from "../../components/course/course.card";
 import EmptyComponent from "../../components/empty";
 import Navbar from "../../components/navbar";
+import { device } from "../../constants";
 import {
   addCourse,
   setInitialLoading,
@@ -17,7 +18,7 @@ import {
 // styled
 const Container = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 50px 20px 20px 20px;
 `;
 
 const CourseCardContainer = styled.div`
@@ -25,12 +26,16 @@ const CourseCardContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 70px;
+  @media ${device.lg} {
+    display: block;
+  }
 `;
 
 const SpinnerContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  
 `;
 
 type Props = {};

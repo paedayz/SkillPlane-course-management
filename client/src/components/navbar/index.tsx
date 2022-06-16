@@ -26,10 +26,10 @@ const Container = styled.div`
   margin-bottom: 30px;
   user-select: none;
   font-family: "Kanit", sans-serif;
-
-  @media ${device.lg} {
-    height: 60px;
-  }
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
 `;
 
 const RightContainer = styled.div`
@@ -86,9 +86,8 @@ const LogoutButton = styled(Button)`
     width: 60px;
     height: 25px;
     text-align: center;
-    }
-  
-`
+  }
+`;
 
 type Props = {
   defalutKeyword: string | null;
