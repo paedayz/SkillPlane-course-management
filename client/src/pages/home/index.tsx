@@ -1,12 +1,16 @@
 import { Spin } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import CourseCard from "../../components/course/course.card";
 import EmptyComponent from "../../components/empty";
 import Navbar from "../../components/navbar";
-import { addCourse, selectSkip } from "../../slices/course.slice";
+import {
+  addCourse,
+  setInitialLoading,
+  setPaginationLoading,
+} from "../../slices/course.slice";
 
 // styled
 const Container = styled.div`
@@ -31,15 +35,12 @@ type Props = {};
 
 function Homepage({}: Props) {
   // useState
-  const [take, setTake] = useState<number>(10);
-  const [keyword, setKeyword] = useState<string>();
-  const [minDuration, setMinDuration] = useState<number>();
-  const [maxDuration, setMaxDuration] = useState<number>();
-
-  const [loading, setLoading] = useState<boolean>(false);
-  const [paginationLoading, setPaginationLoading] = useState(false);
-
-  const skip = useAppSelector(selectSkip);
+  const initialLoading = useAppSelector((state) => state.course.initialLoading);
+  const paginationLoading = useAppSelector(
+    (state) => state.course.paginationLoading
+  );
+  const take = useAppSelector((state) => state.course.take);
+  const skip = useAppSelector((state) => state.course.skip);
   const skipRef = useRef(skip);
 
   const [scrolling, setScrolling] = useState<number>(0);
@@ -53,29 +54,30 @@ function Homepage({}: Props) {
   const courses = useAppSelector((state) => state.course.courses);
 
   // Functions and constant
-  const getData = async () => {
-    const resCourse = await getCourse(
-      take,
-      skipRef.current,
-      keyword,
-      minDuration,
-      maxDuration
-    );
+  const initialCourseData = async () => {
+    const resCourse = await getCourse(take, skipRef.current);
 
     if (resCourse && resCourse.length !== 0) {
       dispatch(addCourse(resCourse));
-      setLoading(false);
-    } else {
-      setLoading(false);
     }
+
+    dispatch(setInitialLoading(false));
   };
 
   const paginationGetData = () => {
-    setPaginationLoading(true);
+    dispatch(setPaginationLoading(true));
+
     document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      getData();
-      setPaginationLoading(false);
+
+    setTimeout(async () => {
+      const resCourse = await getCourse(take, skipRef.current);
+
+      if (resCourse && resCourse.length !== 0) {
+        dispatch(addCourse(resCourse));
+      }
+
+      dispatch(setPaginationLoading(false));
+
       document.body.style.overflow = "visible";
     }, 2000);
   };
@@ -102,7 +104,7 @@ function Homepage({}: Props) {
 
   // useEffect
   useEffect(() => {
-    getData();
+    initialCourseData();
   }, []);
 
   useEffect(() => {
@@ -118,14 +120,23 @@ function Homepage({}: Props) {
   return (
     <Container>
       <Navbar />
+
       <CourseCardContainer>
-        {!loading ? renderCourseCard : <Spin size="large" />}
+        {!initialLoading ? (
+          renderCourseCard
+        ) : (
+          <SpinnerContainer>
+            <Spin size="large" />
+          </SpinnerContainer>
+        )}
       </CourseCardContainer>
+
       {paginationLoading && (
         <SpinnerContainer>
           <Spin size="large" />
         </SpinnerContainer>
       )}
+
       <div style={{ marginBottom: "300px" }} />
     </Container>
   );

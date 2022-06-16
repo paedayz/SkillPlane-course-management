@@ -1,10 +1,12 @@
 import { Button, Input, Slider } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { logout } from "../../api";
-import { useAppSelector } from "../../app/hooks";
+import { getCourse } from "../../api/course.api";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { device } from "../../constants";
+import { resetSkip } from "../../slices/course.slice";
 
 const { Search } = Input;
 
@@ -56,20 +58,41 @@ const SliderContainer = styled.div`
 type Props = {};
 
 function Navbar({}: Props) {
+  // useState
+  const [keyword, setKeyword] = useState<string>();
+  const [minDuration, setMinDuration] = useState<number>();
+  const [maxDuration, setMaxDuration] = useState<number>();
+  
   const history = useHistory();
 
-  const skip = useAppSelector(state => state.course.skip)
+  const take = useAppSelector(state => state.course.take)
+  const skip = useAppSelector(state => state.course.skip);
+
+  const dispatch = useAppDispatch()
 
   const onclickLogout = async () => {
     const res = await logout();
     if (res) history.push("/login");
   };
 
-  const onSearch = (value: string) => console.log(value);
+  const getData = async () => {
+    const resCourse = await getCourse(
+      take,
+      skip,
+      keyword,
+      minDuration,
+      maxDuration
+    )
 
-  const onChange = (value: number | [number, number]) => {
-    console.log("onChange: ", value);
+    
+  }
+
+  const onSearch = async (value: string) => {
+    dispatch(resetSkip())
+    await getData()
   };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)
 
   const onAfterChange = (value: number | [number, number]) => {
     console.log("onAfterChange: ", value);
@@ -79,9 +102,6 @@ function Navbar({}: Props) {
     <Container>
       <Logo src="logo-skillPlane.png" />
       <RightContainer>
-        <div>
-          {skip}
-        </div>
         <SliderContainer>
           <div>Max-Min Hour</div>
           <Slider onAfterChange={onAfterChange} range step={1} min={0} max={20}/>
@@ -89,6 +109,7 @@ function Navbar({}: Props) {
 
         <SearchBox
           placeholder="input search text"
+          onChange={onChangeSearch}
           onSearch={onSearch}
           style={{ width: 200 }}
         />
