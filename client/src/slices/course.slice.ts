@@ -82,13 +82,20 @@ export const courseSlice = createSlice({
       //   params.delete("maxDuration");
       // }
 
-      const queryKeyword = state.keyword ? `keyword=${state.keyword}` : "";
-      const queryMinDuration = state.minDuration
-        ? `minDuration=${state.minDuration}`
-        : "";
-      const queryMaxDuration = state.maxDuration
-        ? `maxDuration=${state.maxDuration}`
-        : "";
+      const queryKeyword =
+        action.payload.keyword !== undefined
+          ? `keyword=${action.payload.keyword}`
+          : "";
+
+      const queryMinDuration =
+        action.payload.minDuration !== undefined
+          ? `minDuration=${action.payload.minDuration}`
+          : "";
+          
+      const queryMaxDuration =
+        action.payload.maxDuration !== undefined
+          ? `maxDuration=${action.payload.maxDuration}`
+          : "";
 
       let queryString = "?";
       let count = 0;
@@ -105,11 +112,9 @@ export const courseSlice = createSlice({
         }
       }
 
-      window.history.replaceState(
-        {},
-        "",
-        queryString.length > 1 ? queryString : ""
-      );
+      console.log(queryString.length > 1 ? queryString : undefined);
+
+      window.history.replaceState({}, "", queryString);
     },
     setInitialLoading: (state, action) => {
       state.initialLoading = action.payload;
