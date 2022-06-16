@@ -1,0 +1,23 @@
+{
+  "name": "test-skilllane",
+  "version": "1.0.0",
+  "description": "\"# test-skilllane-web\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start",
+    "backend": "cd server && nodemon src/index.js",
+    "dev": "concurrently \"npm run backend\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paedayz/test-skilllane-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paedayz/test-skilllane-web/issues"
+  },
+  "homepage": "https://github.com/paedayz/test-skilllane-web#readme"
+}

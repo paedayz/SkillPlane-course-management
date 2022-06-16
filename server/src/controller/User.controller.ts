@@ -12,6 +12,7 @@ export class UserController {
     }
 
     async login(request: Request, response: Response, next: NextFunction): Promise<ITokens> {
+        console.log('login')
         const body: LoginBodyDto = request.body
         return await this.userService.login(body.username, body.password)
     }
