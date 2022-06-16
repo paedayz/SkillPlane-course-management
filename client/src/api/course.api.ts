@@ -10,13 +10,13 @@ export const getCourse = async (
 ): Promise<ICourse[] | undefined> => {
   try {
     const queryTake = `?take=${take}`;
-    const querySkip = keyword ? `&skip=${skip}` : "";
+    const querySkip = `&skip=${skip}`;
     const queryKeyword = keyword ? `&keyword=${keyword}` : "";
     const queryMinDuration = minDuration ? `&minDuration=${minDuration}` : "";
     const queryMaxDuration = maxDuration ? `&maxDuration=${maxDuration}` : "";
 
     const accessToken = await getAccessToken();
-
+    console.log(`/course${queryTake}${querySkip}${queryKeyword}${queryMinDuration}${queryMaxDuration}`)
     const res = await appAxios.get(
       `/course${queryTake}${querySkip}${queryKeyword}${queryMinDuration}${queryMaxDuration}`,
       {

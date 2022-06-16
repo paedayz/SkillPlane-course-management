@@ -21,17 +21,25 @@ const CourseCardContainer = styled.div`
   margin-top: 70px;
 `;
 
+const SpinnerContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 type Props = {};
 
 function Homepage({}: Props) {
   // useState
-  const [take, setTake] = useState(10);
-  const [skip, setSkip] = useState(0);
+  const [take, setTake] = useState<number>(10);
   const [keyword, setKeyword] = useState<string>();
   const [minDuration, setMinDuration] = useState<number>();
   const [maxDuration, setMaxDuration] = useState<number>();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [paginationLoading, setPaginationLoading] = useState(false);
+
+  let skip = 0;
 
   // Redux
   const dispatch = useAppDispatch();
@@ -48,26 +56,52 @@ function Homepage({}: Props) {
     );
 
     if (resCourse) {
+      if(resCourse.length !== 0) skip = skip + 10;
       dispatch(addCourse(resCourse));
       setLoading(false);
-      setSkip(skip + 10);
     } else {
       setLoading(false);
     }
   };
 
+  const paginationGetData = () => {
+    setPaginationLoading(true);
+    document.body.style.overflow = 'hidden'
+    setTimeout(() => {
+      getData();
+      setPaginationLoading(false);
+      document.body.style.overflow = 'visible'
+    }, 2000);
+  };
+
   const renderCourseCard =
     courses.length > 0 ? (
       courses.map((course) => {
-        return <CourseCard data={course} />;
+        return <CourseCard key={Math.random()} data={course} />;
       })
     ) : (
       <EmptyComponent description="No data" />
     );
 
+  const handleNavigation = (e: Event) => {
+    if (
+      document.body.offsetHeight + window.scrollY ===
+        document.body.scrollHeight &&
+      !paginationLoading
+    ) {
+      paginationGetData();
+    }
+  };
+
   // useEffect
   useEffect(() => {
     getData();
+
+    window.addEventListener("scroll", (e) => handleNavigation(e));
+
+    return () => {
+      window.removeEventListener("scroll", (e) => handleNavigation(e));
+    };
   }, []);
 
   return (
@@ -76,7 +110,8 @@ function Homepage({}: Props) {
       <CourseCardContainer>
         {!loading ? renderCourseCard : <Spin size="large" />}
       </CourseCardContainer>
-      <div style={{ marginBottom: "100px" }} />
+      {paginationLoading && <SpinnerContainer><Spin size="large" /></SpinnerContainer>}
+      <div style={{ marginBottom: "300px" }} />
     </Container>
   );
 }
