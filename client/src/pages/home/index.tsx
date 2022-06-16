@@ -1,12 +1,12 @@
 import { Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import CourseCard from "../../components/course/course.card";
 import EmptyComponent from "../../components/empty";
 import Navbar from "../../components/navbar";
-import { addCourse } from "../../slices/course.slice";
+import { addCourse, selectSkip } from "../../slices/course.slice";
 
 // styled
 const Container = styled.div`
@@ -39,7 +39,14 @@ function Homepage({}: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [paginationLoading, setPaginationLoading] = useState(false);
 
-  let skip = 0;
+  const skip = useAppSelector(selectSkip);
+  const skipRef = useRef(skip);
+
+  const [scrolling, setScrolling] = useState<number>(0);
+
+  const setSkipRef = (data: number) => {
+    skipRef.current = data;
+  };
 
   // Redux
   const dispatch = useAppDispatch();
@@ -49,14 +56,13 @@ function Homepage({}: Props) {
   const getData = async () => {
     const resCourse = await getCourse(
       take,
-      skip,
+      skipRef.current,
       keyword,
       minDuration,
       maxDuration
     );
 
-    if (resCourse) {
-      if(resCourse.length !== 0) skip = skip + 10;
+    if (resCourse && resCourse.length !== 0) {
       dispatch(addCourse(resCourse));
       setLoading(false);
     } else {
@@ -66,11 +72,11 @@ function Homepage({}: Props) {
 
   const paginationGetData = () => {
     setPaginationLoading(true);
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = "hidden";
     setTimeout(() => {
       getData();
       setPaginationLoading(false);
-      document.body.style.overflow = 'visible'
+      document.body.style.overflow = "visible";
     }, 2000);
   };
 
@@ -84,6 +90,7 @@ function Homepage({}: Props) {
     );
 
   const handleNavigation = (e: Event) => {
+    setScrolling(window.scrollY);
     if (
       document.body.offsetHeight + window.scrollY ===
         document.body.scrollHeight &&
@@ -96,13 +103,17 @@ function Homepage({}: Props) {
   // useEffect
   useEffect(() => {
     getData();
+  }, []);
+
+  useEffect(() => {
+    setSkipRef(skip);
 
     window.addEventListener("scroll", (e) => handleNavigation(e));
 
     return () => {
-      window.removeEventListener("scroll", (e) => handleNavigation(e));
+      return window.removeEventListener("scroll", (e) => handleNavigation(e));
     };
-  }, []);
+  }, [scrolling]);
 
   return (
     <Container>
@@ -110,7 +121,11 @@ function Homepage({}: Props) {
       <CourseCardContainer>
         {!loading ? renderCourseCard : <Spin size="large" />}
       </CourseCardContainer>
-      {paginationLoading && <SpinnerContainer><Spin size="large" /></SpinnerContainer>}
+      {paginationLoading && (
+        <SpinnerContainer>
+          <Spin size="large" />
+        </SpinnerContainer>
+      )}
       <div style={{ marginBottom: "300px" }} />
     </Container>
   );

@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { login, logout, register } from "../api";
-import { LOCALSTORAGE_AC_TOKEN_KEY } from "../constants";
-import { IDecodeToken, ILoginBody, IRegisterBody } from "../interfaces";
-import jwt_decode from "jwt-decode";
+import { RootState } from "../app/store";
 
 export interface IUserState {
-    courses: ICourse[]
+    courses: ICourse[],
+    take: number;
+    skip: number;
 }
 
 export interface ICourse {
@@ -24,7 +23,9 @@ export interface ICourse {
 }
 
 const initialState: IUserState = {
-  courses: []
+  courses: [],
+  take: 10,
+  skip: 0,
 };
 
 export const courseSlice = createSlice({
@@ -33,12 +34,17 @@ export const courseSlice = createSlice({
   reducers: {
     addCourse: (state, action) => {
         state.courses = ([] as ICourse[]).concat(state.courses, action.payload)
+
+        state.skip = state.skip + state.take
+        console.log(state.skip)
     }
   },
   extraReducers: (builder) => {},
 });
 
 export const {addCourse} = courseSlice.actions
+
+export const selectSkip = (state: RootState) => state.course.skip;
 
 
 export default courseSlice.reducer
