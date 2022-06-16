@@ -73,6 +73,7 @@ type Props = {};
 
 function Navbar({}: Props) {
   const history = useHistory();
+  const params = new URLSearchParams();
 
   const take = useAppSelector((state) => state.course.take);
   const skip = useAppSelector((state) => state.course.skip);
@@ -87,9 +88,9 @@ function Navbar({}: Props) {
   const minDurationRef = useRef(minDuration);
 
   // useState
-  const [keywordState, setKeywordState] = useState()
-  const [maxDurationState, setMaxDurationState] = useState(0)
-  const [minDurationState, setMinDurtaionState] = useState(0)
+  const [keywordState, setKeywordState] = useState('');
+  const [maxDurationState, setMaxDurationState] = useState(0);
+  const [minDurationState, setMinDurtaionState] = useState(0);
 
   const dispatch = useAppDispatch();
 
@@ -112,6 +113,36 @@ function Navbar({}: Props) {
   };
 
   const onSearch = async () => {
+    // // set keyword params
+    // if (keyword && keyword.length > 0) {
+    //   params.append("keyword", keyword);
+    // } else {
+    //   params.delete("keyword");
+    // }
+
+    // if (minDuration && minDuration !== 0) {
+    //   params.append("minDuration", minDuration.toString());
+    // } else {
+    //   params.delete("minDuration");
+    // }
+
+    // if (maxDuration && maxDuration !== 0) {
+    //   params.append("maxDuration", maxDuration.toString());
+    // } else {
+    //   params.delete("maxDuration");
+    // }
+
+    // history.push({ search: params.toString() });
+
+    dispatch(
+      setQueryParams({
+        keyword: keywordState,
+        minDuration: minDurationRef.current,
+        maxDuration: maxDurationRef.current,
+      })
+    );
+    keywordRef.current = keywordState;
+
     dispatch(setInitialLoading(true));
     dispatch(resetBeforeQueryGet());
     await getData();
@@ -119,21 +150,45 @@ function Navbar({}: Props) {
   };
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQueryParams({ keyword: e.target.value }));
-    keywordRef.current = e.target.value;
+    setKeywordState(e.target.value)
     if (e.target.value.length === 0) onSearch();
   };
 
   const onSliderChange = (value: [number, number]) => {
-    setMinDurtaionState(value[0])
-    setMaxDurationState(value[1])
-  }
+    // // set keyword params
+    // if (value[0] !== 0) {
+    //   params.append("minDuration", value[0].toString());
+    // } else {
+    //   params.delete("minDuration");
+    // }
+
+    // if (value[1] !== 0) {
+    //   params.append("maxDuration", value[1].toString());
+    // } else {
+    //   params.delete("maxDuration");
+    // }
+
+    // if (keyword) {
+    //   params.append("keyword", keyword);
+    // } else {
+    //   params.delete("keyword");
+    // }
+
+    // history.push({ search: params.toString() });
+
+    setMinDurtaionState(value[0]);
+    setMaxDurationState(value[1]);
+  };
 
   const onAfterSliderChange = (value: [number, number]) => {
     const minSecond = value[0] * 3600;
     const maxSecond = value[1] * 3600;
     dispatch(
-      setQueryParams({ minDuration: minSecond, maxDuration: maxSecond })
+      setQueryParams({
+        keyword: keyword,
+        minDuration: minSecond,
+        maxDuration: maxSecond,
+      })
     );
     skipRef.current = 0;
     minDurationRef.current = minSecond;
@@ -141,19 +196,26 @@ function Navbar({}: Props) {
     onSearch();
   };
 
-  const onClickClearFilter = () => {
+  const onClickClearFilter = async () => {
     keywordRef.current = undefined;
     minDurationRef.current = undefined;
     maxDurationRef.current = undefined;
-    setMinDurtaionState(0)
-    setMaxDurationState(0)
+
+    setMinDurtaionState(0);
+    setMaxDurationState(0);
+    setKeywordState('')
+
     dispatch(setQueryParams({}));
-    onSearch()
+
+    dispatch(setInitialLoading(true));
+    dispatch(resetBeforeQueryGet());
+    await getData();
+    dispatch(setInitialLoading(false));
   };
 
   const getSliderValue = (): [number, number] => {
-    const min = minDuration ? minDuration / 3600 >> 0: 0;
-    const max = maxDuration ? maxDuration / 3600 >> 0: 0;
+    const min = minDuration ? (minDuration / 3600) >> 0 : 0;
+    const max = maxDuration ? (maxDuration / 3600) >> 0 : 0;
     return [min, max];
   };
 
@@ -167,7 +229,7 @@ function Navbar({}: Props) {
             <div>Max-Min Hour</div>
             <Slider
               defaultValue={getSliderValue()}
-              value={[minDurationState,maxDurationState]}
+              value={[minDurationState, maxDurationState]}
               onChange={onSliderChange}
               onAfterChange={onAfterSliderChange}
               range
@@ -178,7 +240,7 @@ function Navbar({}: Props) {
           </SliderContainer>
 
           <SearchBox
-            value={keyword}
+            value={keywordState}
             placeholder="input search text"
             onChange={onChangeSearch}
             onSearch={onSearch}

@@ -58,6 +58,58 @@ export const courseSlice = createSlice({
       state.keyword = action.payload.keyword;
       state.minDuration = action.payload.minDuration;
       state.maxDuration = action.payload.maxDuration;
+
+      // const params = new URLSearchParams();
+
+      // params.append("take", state.take.toString());
+      // params.append("skip", state.skip.toString());
+
+      // if (state.keyword) {
+      //   params.append("keyword", state.keyword);
+      // } else {
+      //   params.delete("keyword");
+      // }
+
+      // if (state.minDuration) {
+      //   params.append("minDuration", state.minDuration.toString());
+      // } else {
+      //   params.delete("minDuration");
+      // }
+
+      // if (state.maxDuration) {
+      //   params.append("maxDuration", state.maxDuration.toString());
+      // } else {
+      //   params.delete("maxDuration");
+      // }
+
+      const queryKeyword = state.keyword ? `keyword=${state.keyword}` : "";
+      const queryMinDuration = state.minDuration
+        ? `minDuration=${state.minDuration}`
+        : "";
+      const queryMaxDuration = state.maxDuration
+        ? `maxDuration=${state.maxDuration}`
+        : "";
+
+      let queryString = "?";
+      let count = 0;
+      let buffArr = [queryKeyword, queryMinDuration, queryMaxDuration];
+
+      for (let index in buffArr) {
+        let query = buffArr[index];
+        if (query !== "" && count == 0) {
+          queryString += query;
+          count++;
+        } else if (query !== "") {
+          queryString += `&${query}`;
+          count++;
+        }
+      }
+
+      window.history.replaceState(
+        {},
+        "",
+        queryString.length > 1 ? queryString : ""
+      );
     },
     setInitialLoading: (state, action) => {
       state.initialLoading = action.payload;

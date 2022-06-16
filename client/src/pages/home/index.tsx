@@ -1,5 +1,6 @@
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -10,6 +11,7 @@ import {
   addCourse,
   setInitialLoading,
   setPaginationLoading,
+  setQueryParams,
 } from "../../slices/course.slice";
 
 // styled
@@ -45,6 +47,7 @@ function Homepage({}: Props) {
   const maxDuration = useAppSelector((state) => state.course.maxDuration);
   const minDuration = useAppSelector((state) => state.course.minDuration);
 
+  const takeRef = useRef(take);
   const skipRef = useRef(skip);
   const keywordRef = useRef(keyword);
   const maxDurationRef = useRef(maxDuration);
@@ -58,7 +61,14 @@ function Homepage({}: Props) {
 
   // Functions and constant
   const initialCourseData = async () => {
-    const resCourse = await getCourse(take, skipRef.current);
+    const resCourse = await getCourse(
+      take,
+      skipRef.current,
+      keywordRef.current,
+      minDurationRef.current,
+      maxDurationRef.current,
+      
+    );
 
     if (resCourse && resCourse.length !== 0) {
       dispatch(addCourse(resCourse));
@@ -111,8 +121,43 @@ function Homepage({}: Props) {
     }
   };
 
+  const getSearchParams = () => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let takeParams = params.get("take");
+    let skipParams = params.get("skip");
+    let keywordParams = params.get("keyword");
+    let minDurationParams = params.get("minDuration");
+    let maxDurationParams = params.get("maxDuration");
+
+    takeRef.current = takeParams ? parseInt(takeParams) : takeRef.current;
+    skipRef.current = skipParams ? parseInt(skipParams) : skipRef.current;
+    keywordRef.current = keywordParams ? keywordParams : keywordRef.current;
+    minDurationRef.current = minDurationParams
+      ? parseInt(minDurationParams)
+      : minDurationRef.current;
+    maxDurationRef.current = maxDurationParams
+      ? parseInt(maxDurationParams)
+      : maxDurationRef.current;
+
+    dispatch(
+      setQueryParams({
+        keyword: keywordRef.current,
+        minDuration: minDurationRef.current,
+        maxDuration: maxDurationRef.current,
+      })
+    );
+
+    console.log("params >> ", {
+      keywordParams,
+      minDurationParams,
+      maxDurationParams,
+    });
+  };
+
   // useEffect
   useEffect(() => {
+    getSearchParams();
     initialCourseData();
   }, []);
 
