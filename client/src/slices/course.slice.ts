@@ -59,29 +59,6 @@ export const courseSlice = createSlice({
       state.minDuration = action.payload.minDuration;
       state.maxDuration = action.payload.maxDuration;
 
-      // const params = new URLSearchParams();
-
-      // params.append("take", state.take.toString());
-      // params.append("skip", state.skip.toString());
-
-      // if (state.keyword) {
-      //   params.append("keyword", state.keyword);
-      // } else {
-      //   params.delete("keyword");
-      // }
-
-      // if (state.minDuration) {
-      //   params.append("minDuration", state.minDuration.toString());
-      // } else {
-      //   params.delete("minDuration");
-      // }
-
-      // if (state.maxDuration) {
-      //   params.append("maxDuration", state.maxDuration.toString());
-      // } else {
-      //   params.delete("maxDuration");
-      // }
-
       const queryKeyword =
         action.payload.keyword !== undefined
           ? `keyword=${action.payload.keyword}`
@@ -91,7 +68,7 @@ export const courseSlice = createSlice({
         action.payload.minDuration !== undefined
           ? `minDuration=${action.payload.minDuration}`
           : "";
-          
+
       const queryMaxDuration =
         action.payload.maxDuration !== undefined
           ? `maxDuration=${action.payload.maxDuration}`

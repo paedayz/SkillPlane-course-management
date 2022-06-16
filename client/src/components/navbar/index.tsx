@@ -194,7 +194,6 @@ function Navbar({
       <Logo src="logo-skillPlane.png" />
       <RightContainer>
         <FilterContainer>
-          <div style={{ marginRight: "50px" }}>{skip}</div>
           <SliderContainer>
             <div>Max-Min Hour</div>
             <Slider
