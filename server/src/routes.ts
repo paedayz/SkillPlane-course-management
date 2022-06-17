@@ -27,6 +27,14 @@ const userRoute: IRoute[] = [
   },
 
   {
+    method: "get",
+    route: "/user",
+    controller: UserController,
+    action: "getUserCredentials",
+    role: "user",
+  },
+
+  {
     method: "post",
     route: "/refreshToken",
     controller: UserController,

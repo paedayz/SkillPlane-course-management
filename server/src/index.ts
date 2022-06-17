@@ -27,14 +27,18 @@ AppDataSource.initialize()
             res,
             next
           );
-          if (result instanceof Promise) {
-            result.then((result) =>
-              result !== null && result !== undefined
-                ? res.send(result)
-                : undefined
-            );
-          } else if (result !== null && result !== undefined) {
-            res.json(result);
+          try {
+            if (result instanceof Promise) {
+              result.then((result) =>
+                result !== null && result !== undefined
+                  ? res.send(result)
+                  : undefined
+              );
+            } else if (result !== null && result !== undefined) {
+              res.json(result);
+            }
+          } catch (error) {
+            res.status(500).json(error.message)
           }
         }
       );

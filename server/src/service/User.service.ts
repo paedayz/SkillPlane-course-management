@@ -1,6 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { User } from "../entity/User.entity";
-import { ISaveUserEntity, ITokens, IUserService } from "../interfaces";
+import { ISaveUserEntity, ITokens, IUserCredentials, IUserService } from "../interfaces";
 import * as jwt from "jsonwebtoken";
 import { at_secret, rt_secret } from "../../config";
 import * as bcrypt from "bcrypt";
@@ -44,6 +44,7 @@ export class UserService implements IUserService {
       return tokens;
     } catch (error) {
       console.log(error);
+      throw new Error(error.message)
     }
   }
 
@@ -61,6 +62,26 @@ export class UserService implements IUserService {
     await this.updateRefreshTokenHash(user.username, tokens.refreshToken);
 
     return tokens;
+  }
+
+  async getUserCredentials(username: string): Promise<IUserCredentials> {
+    const user = await this.userRepository.findOne({
+        where: [{ username }],
+      });
+  
+      if (!user) throw new Error("User not found");
+
+      const userCredentials: IUserCredentials = {
+        username: user.username,
+        role: user.role,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        nickname: user.nickname,
+        birthday: user.birthday,
+        gender: user.gender,
+      }
+
+      return userCredentials
   }
 
   async refreshToken(refreshToken: string, username: string): Promise<ITokens> {
@@ -84,6 +105,7 @@ export class UserService implements IUserService {
 
       return tokens;
     } catch (error) {
+      console.log(error)
       throw new Error(error.message);
     }
   }

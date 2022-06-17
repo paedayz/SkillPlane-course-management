@@ -33,6 +33,15 @@ export class UserController {
     return await this.userService.login(body.username, body.password);
   }
 
+  async getUserCredentials(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const username = request['user'].username;
+    return await this.userService.getUserCredentials(username)
+  }
+
   async refreshToken(
     request: Request,
     response: Response,
