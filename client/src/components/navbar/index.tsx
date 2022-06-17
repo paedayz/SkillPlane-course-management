@@ -25,7 +25,6 @@ const Container = styled.div`
   box-shadow: 0px 5px 20px lightblue;
   margin-bottom: 30px;
   user-select: none;
-  font-family: "Kanit", sans-serif;
   position: fixed;
   z-index: 100;
   top: 0;

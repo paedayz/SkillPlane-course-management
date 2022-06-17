@@ -9,7 +9,6 @@ const Container = styled.div`
   margin-bottom: 20px;
   margin-right: 20px;
   background-color: transparent;
-  font-family: "Kanit", sans-serif;
   cursor: pointer;
   user-select: none;
 

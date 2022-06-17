@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import AddCrouseButton from "../../components/course/add.course.button";
 import CourseCard from "../../components/course/course.card";
 import EmptyComponent from "../../components/empty";
 import Navbar from "../../components/navbar";
@@ -119,8 +120,10 @@ function Homepage({}: Props) {
 
   const handleNavigation = (e: Event) => {
     setScrolling(window.scrollY);
+    console.log(document.body.offsetHeight + window.scrollY)
+    console.log(document.body.scrollHeight)
     if (
-      document.body.offsetHeight + window.scrollY ===
+      document.body.offsetHeight + window.scrollY >=
         document.body.scrollHeight &&
       !paginationLoading
     ) {
@@ -198,7 +201,7 @@ function Homepage({}: Props) {
           <Spin size="large" />
         </SpinnerContainer>
       )}
-
+      <AddCrouseButton />
       <div style={{ marginBottom: "300px" }} />
     </Container>
   );
