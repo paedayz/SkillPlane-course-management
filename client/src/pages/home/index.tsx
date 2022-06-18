@@ -36,7 +36,6 @@ const SpinnerContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  
 `;
 
 type Props = {};
@@ -66,6 +65,7 @@ function Homepage({}: Props) {
 
   // Redux
   const dispatch = useAppDispatch();
+  const userRole = useAppSelector((state) => state.user.role);
   const courses = useAppSelector((state) => state.course.courses);
 
   // Functions and constant
@@ -182,7 +182,11 @@ function Homepage({}: Props) {
 
   return (
     <Container>
-      <Navbar defalutKeyword={params.get("keyword")} defaultMinDuration={params.get("minDuration")} defaultMaxDuration={params.get("maxDuration")}/>
+      <Navbar
+        defalutKeyword={params.get("keyword")}
+        defaultMinDuration={params.get("minDuration")}
+        defaultMaxDuration={params.get("maxDuration")}
+      />
 
       <CourseCardContainer>
         {!initialLoading ? (
@@ -199,7 +203,8 @@ function Homepage({}: Props) {
           <Spin size="large" />
         </SpinnerContainer>
       )}
-      <AddCrouseButton />
+      {userRole === "admin" && <AddCrouseButton />}
+
       <div style={{ marginBottom: "300px" }} />
     </Container>
   );
