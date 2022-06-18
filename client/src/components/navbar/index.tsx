@@ -88,6 +88,10 @@ const LogoutButton = styled(Button)`
   }
 `;
 
+const secondToHour = (value: number): number => {
+  return (value / 3600) >> 0
+};
+
 type Props = {
   defalutKeyword: string | null;
   defaultMinDuration: string | null;
@@ -100,7 +104,6 @@ function Navbar({
   defaultMaxDuration,
 }: Props) {
   const history = useHistory();
-  const params = new URLSearchParams();
 
   const take = useAppSelector((state) => state.course.take);
   const skip = useAppSelector((state) => state.course.skip);
@@ -115,9 +118,16 @@ function Navbar({
   const minDurationRef = useRef(minDuration);
 
   // useState
-  const [keywordState, setKeywordState] = useState("");
-  const [maxDurationState, setMaxDurationState] = useState(0);
-  const [minDurationState, setMinDurtaionState] = useState(0);
+  const [keywordState, setKeywordState] = useState(
+    defalutKeyword ? defalutKeyword : ""
+  );
+
+  const [maxDurationState, setMaxDurationState] = useState(
+    defaultMinDuration ? secondToHour(parseInt(defaultMinDuration)) : 0
+  );
+  const [minDurationState, setMinDurtaionState] = useState(
+    defaultMaxDuration ? secondToHour(parseInt(defaultMaxDuration)) : 0
+  );
 
   const dispatch = useAppDispatch();
 
@@ -181,6 +191,8 @@ function Navbar({
     onSearch();
   };
 
+  
+
   const onClickClearFilter = async () => {
     keywordRef.current = undefined;
     minDurationRef.current = undefined;
@@ -198,16 +210,6 @@ function Navbar({
     dispatch(setInitialLoading(false));
   };
 
-  const getSliderValue = (): [number, number] => {
-    const min = defaultMinDuration
-      ? (parseInt(defaultMinDuration) / 3600) >> 0
-      : 0;
-    const max = defaultMaxDuration
-      ? (parseInt(defaultMaxDuration) / 3600) >> 0
-      : 0;
-    return [min, max];
-  };
-
   return (
     <Container>
       <Logo src="logo-skillPlane.png" />
@@ -216,7 +218,7 @@ function Navbar({
           <SliderContainer>
             <div>Max-Min Hour</div>
             <Slider
-              defaultValue={getSliderValue()}
+              value={[minDurationState, maxDurationState]}
               onChange={onSliderChange}
               onAfterChange={onAfterSliderChange}
               range
@@ -227,7 +229,7 @@ function Navbar({
           </SliderContainer>
 
           <SearchBox
-            defaultValue={defalutKeyword ? defalutKeyword : ""}
+            value={keywordState}
             placeholder="input search text"
             onChange={onChangeSearch}
             onSearch={() => onSearch()}
