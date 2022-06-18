@@ -48,7 +48,7 @@ function AddCrouseButton({}: Props) {
   
   return (
     <Container>
-      <Tooltip title="Add Course">
+      <Tooltip title="Create Course">
         <AddButton
           color="green"
           size="large"
@@ -59,7 +59,7 @@ function AddCrouseButton({}: Props) {
       </Tooltip>
 
       <Modal
-        title="Add Course"
+        title="Create Course"
         visible={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}

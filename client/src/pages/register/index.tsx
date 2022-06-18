@@ -53,16 +53,12 @@ function RegisterPage(props: Props) {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <Container>
       <Title>Register</Title>
       <Form
         name="basic"
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item

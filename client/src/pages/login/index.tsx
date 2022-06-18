@@ -27,7 +27,7 @@ interface IFormInput {
 
 type Props = {};
 
-function LoginPage({}: Props) {
+function LoginPage(props: Props) {
     const [loading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -44,9 +44,6 @@ function LoginPage({}: Props) {
     
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <Container>
       <Title>Login</Title>
@@ -56,7 +53,6 @@ function LoginPage({}: Props) {
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item

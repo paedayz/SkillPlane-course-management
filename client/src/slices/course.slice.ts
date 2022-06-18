@@ -43,20 +43,20 @@ export const courseSlice = createSlice({
   initialState,
   reducers: {
     addCourse: (state, action) => {
-      console.log("addCourse >>>> ", action.payload);
       state.courses = ([] as ICourse[]).concat(state.courses, action.payload);
       state.skip = state.skip + state.take;
     },
     createdCourse: (state, action) => {
-      console.log("addCourse >>>> ", action.payload);
       state.courses = ([] as ICourse[]).concat([action.payload], state.courses);
+    },
+    deletedCourse: (state, action) => {
+      state.courses = state.courses.filter(course => course.id !== action.payload)
     },
     resetBeforeQueryGet: (state) => {
       state.skip = 0;
       state.courses = [];
     },
     setQueryParams: (state, action) => {
-      console.log("setQueryParams >>> ", action.payload);
       state.take = action.payload.take | state.take;
       state.skip = action.payload.skip | state.skip;
       state.keyword = action.payload.keyword;
@@ -93,8 +93,6 @@ export const courseSlice = createSlice({
         }
       }
 
-      console.log(queryString.length > 1 ? queryString : undefined);
-
       window.history.replaceState({}, "", queryString);
     },
     setInitialLoading: (state, action) => {
@@ -110,6 +108,7 @@ export const courseSlice = createSlice({
 export const {
   addCourse,
   createdCourse,
+  deletedCourse,
   resetBeforeQueryGet,
   setInitialLoading,
   setPaginationLoading,

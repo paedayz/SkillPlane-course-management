@@ -1,7 +1,8 @@
-import React from "react";
 import styled from "styled-components";
+import { useAppSelector } from "../../app/hooks";
 import { device } from "../../constants";
 import { ICourse } from "../../slices/course.slice";
+import CourseDeleteButton from "./course.delete.button";
 
 const Container = styled.div`
   width: 250px;
@@ -55,6 +56,7 @@ const FlipCardInner = styled.div`
   text-align: center;
   transition: transform 1.5s;
   transform-style: preserve-3d;
+
   @media ${device.lg} {
     width: 100%;
     display: flex;
@@ -133,6 +135,7 @@ const FlipDetailContainer = styled.div`
     padding-right: 10px;
   }
 `;
+
 type Props = {
   data: ICourse;
 };
@@ -149,9 +152,10 @@ function CourseCard({ data }: Props) {
     endTime,
     numberOfStudent,
     duration,
-    createdBy,
-    createdAt,
   } = data;
+
+  // Redux
+  const userRole = useAppSelector((state) => state.user.role);
 
   //   Function and constants
   const durationToString = (seconds: number): string => {
@@ -160,9 +164,9 @@ function CourseCard({ data }: Props) {
     var m = Math.floor((seconds % 3600) / 60);
     var s = Math.floor((seconds % 3600) % 60);
 
-    var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    var hDisplay = h > 0 ? h + (h === 1 ? " hour " : " hours ") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? " minute " : " minutes ") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
     return hDisplay + mDisplay + sDisplay;
   };
 
@@ -183,14 +187,22 @@ function CourseCard({ data }: Props) {
         </div>
 
         <div className="flip-card-back">
+          {userRole === 'admin' && <CourseDeleteButton courseId={id} />}
+
           <CourseFlipImage src={image} />
           <FlipDetailContainer>
             <CourseDuration>
               <b>Duration:</b> {durationToString(duration)}
             </CourseDuration>
-            <CourseDuration><b>Subject:</b> {subject}</CourseDuration>
-            <CourseDuration><b>Category:</b> {category}</CourseDuration>
-            <CourseDuration><b>Number of seat:</b> {numberOfStudent}</CourseDuration>
+            <CourseDuration>
+              <b>Subject:</b> {subject}
+            </CourseDuration>
+            <CourseDuration>
+              <b>Category:</b> {category}
+            </CourseDuration>
+            <CourseDuration>
+              <b>Number of seat:</b> {numberOfStudent}
+            </CourseDuration>
           </FlipDetailContainer>
         </div>
       </FlipCardInner>

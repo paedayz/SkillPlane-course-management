@@ -80,7 +80,7 @@ function CreateCourse({ closeModal }: Props) {
         openNotificationWithIcon(
           "success",
           "",
-          "Add course successfully"
+          "Create course successfully"
         );
       } else {
         setIsLoading(false);

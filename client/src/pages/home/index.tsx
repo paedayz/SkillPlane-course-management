@@ -152,18 +152,13 @@ function Homepage(prps: Props) {
         maxDuration: maxDurationRef.current,
       })
     );
-
-    console.log("params >> ", {
-      keywordParams,
-      minDurationParams,
-      maxDurationParams,
-    });
   };
-
+  
   // useEffect
   useEffect(() => {
     getSearchParams();
     initialCourseData();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -177,6 +172,7 @@ function Homepage(prps: Props) {
     return () => {
       return window.removeEventListener("scroll", (e) => handleNavigation(e));
     };
+    // eslint-disable-next-line
   }, [scrolling]);
 
   return (

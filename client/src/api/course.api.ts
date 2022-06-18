@@ -17,9 +17,6 @@ export const getCourse = async (
     const queryMaxDuration = maxDuration ? `&maxDuration=${maxDuration}` : "";
 
     const accessToken = await getAccessToken();
-    console.log(
-      `/course${queryTake}${querySkip}${queryKeyword}${queryMinDuration}${queryMaxDuration}`
-    );
     const res = await appAxios.get(
       `/course${queryTake}${querySkip}${queryKeyword}${queryMinDuration}${queryMaxDuration}`,
       {
@@ -57,6 +54,27 @@ export const createCourse = async (
     const courses: ICourse = res.data;
 
     return courses;
+  } catch (error: any) {
+    if (error.response.data.error)
+      openNotificationWithIcon("error", "Error", error.response.data.error);
+    return undefined;
+  }
+};
+
+export const deleteCourse = async (
+  courseId: number
+): Promise<string | undefined> => {
+  try {
+    const accessToken = await getAccessToken();
+    const res = await appAxios.delete(`/course/${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!res.data) return undefined;
+
+    return res.data;
   } catch (error: any) {
     if (error.response.data.error)
       openNotificationWithIcon("error", "Error", error.response.data.error);
