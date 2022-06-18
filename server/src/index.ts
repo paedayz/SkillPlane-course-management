@@ -7,6 +7,8 @@ import AuthMiddleware from "./middleware/Auth.middleware";
 import { upload } from "./middleware/Multer.middleware";
 import * as cors from "cors";
 
+require('dotenv').config()
+
 AppDataSource.initialize()
   .then(async () => {
     // create express app

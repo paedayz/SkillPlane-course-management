@@ -19,6 +19,8 @@ export class CourseController {
       buffer: request.file?.buffer,
       originalName: request.file?.originalname,
     };
+    const fileOrignalname = createCourseData.image.originalName.toLocaleLowerCase()
+    if(!fileOrignalname.endsWith('jpg') && !fileOrignalname.endsWith('png')) return new Error('File type incorrect')
 
     return this.courseService.createCrouse(
       createCourseData.name,

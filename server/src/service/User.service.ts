@@ -43,7 +43,6 @@ export class UserService implements IUserService {
       await this.updateRefreshTokenHash(username, tokens.refreshToken);
       return tokens;
     } catch (error) {
-      console.log(error);
       return new Error(error.message)
     }
   }
@@ -105,7 +104,6 @@ export class UserService implements IUserService {
 
       return tokens;
     } catch (error) {
-      console.log(error)
       return new Error(error.message);
     }
   }
@@ -122,7 +120,6 @@ export class UserService implements IUserService {
       );
       return "Logout successfully";
     } catch (error) {
-      console.log(error.message);
       return new Error(error.message);
     }
   }
