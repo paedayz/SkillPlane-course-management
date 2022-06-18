@@ -31,7 +31,6 @@ export interface IRegisterDate {
 }
 
 function DateField({ title, isRequired, value, onChangeHandler }: Props) {
-
   const createRangeMomentValue = (
     data?: IRegisterDate
   ): RangeValue<moment.Moment> => {

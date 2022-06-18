@@ -32,7 +32,7 @@ interface IFormInput {
 
 type Props = {};
 
-function RegisterPage({}: Props) {
+function RegisterPage(props: Props) {
   const dispatch = useAppDispatch()
   const history = useHistory()
   const onFinish = async (values: IFormInput) => {

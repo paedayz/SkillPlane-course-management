@@ -1,7 +1,6 @@
-import { Form, Input, Button } from "antd";
+import {Button } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import  { useState } from "react";
 import styled from "styled-components";
 import { createCourse } from "../../api/course.api";
 import { useAppDispatch } from "../../app/hooks";
@@ -78,11 +77,11 @@ function CreateCourse({ closeModal }: Props) {
         dispatch(createdCourse(resCourse));
         setToInitialState();
         closeModal();
-        // openNotificationWithIcon(
-        //   "error",
-        //   "Error input",
-        //   "some field are incorrect or empty"
-        // );
+        openNotificationWithIcon(
+          "success",
+          "",
+          "Add course successfully"
+        );
       } else {
         setIsLoading(false);
       }

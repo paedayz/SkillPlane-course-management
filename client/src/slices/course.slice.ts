@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {  createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 
 export interface IUserState {
@@ -84,7 +84,7 @@ export const courseSlice = createSlice({
 
       for (let index in buffArr) {
         let query = buffArr[index];
-        if (query !== "" && count == 0) {
+        if (query !== "" && count === 0) {
           queryString += query;
           count++;
         } else if (query !== "") {

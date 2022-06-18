@@ -1,6 +1,5 @@
-import { Input, TimePicker } from "antd";
+import { TimePicker } from "antd";
 import moment, { Moment } from "moment";
-import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -23,14 +22,14 @@ type Props = {
 };
 
 function TimeField({ title, isRequired, value, onChangeHandler }: Props) {
-    const secondToTimestring = (second: number) => {
-        const date = new Date(0);
-        date.setSeconds(second); 
-        const timeString = date.toISOString().substr(11, 8);
-        return timeString
-    }
-  
-    const onChange = (_: Moment | null, timeString: string) => {
+  const secondToTimestring = (second: number) => {
+    const date = new Date(0);
+    date.setSeconds(second);
+    const timeString = date.toISOString().substr(11, 8);
+    return timeString;
+  };
+
+  const onChange = (_: Moment | null, timeString: string) => {
     if (timeString) {
       const [hours, minutes, seconds] = timeString.split(":");
       const totalSeconds = +hours * 60 * 60 + +minutes * 60 + +seconds;

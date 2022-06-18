@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Input, Slider, Tooltip } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { logout } from "../../api";
@@ -89,7 +89,7 @@ const LogoutButton = styled(Button)`
 `;
 
 const secondToHour = (value: number): number => {
-  return (value / 3600) >> 0
+  return (value / 3600) >> 0;
 };
 
 type Props = {
@@ -190,8 +190,6 @@ function Navbar({
     maxDurationRef.current = maxSecond;
     onSearch();
   };
-
-  
 
   const onClickClearFilter = async () => {
     keywordRef.current = undefined;

@@ -1,6 +1,5 @@
 import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -40,7 +39,7 @@ const SpinnerContainer = styled.div`
 
 type Props = {};
 
-function Homepage({}: Props) {
+function Homepage(prps: Props) {
   // useState
   const initialLoading = useAppSelector((state) => state.course.initialLoading);
   const paginationLoading = useAppSelector(
