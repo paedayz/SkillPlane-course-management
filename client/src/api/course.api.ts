@@ -36,3 +36,30 @@ export const getCourse = async (
     return undefined;
   }
 };
+
+export const createCourse = async (
+  formData: FormData
+): Promise<ICourse | undefined> => {
+  try {
+
+    const accessToken = await getAccessToken();
+    const res = await appAxios.post(
+      '/course',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (!res.data) return undefined;
+  
+    const courses: ICourse = res.data;
+
+    return courses;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};

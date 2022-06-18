@@ -1,8 +1,7 @@
-import { DatePicker, Input, TimePicker } from "antd";
-import moment, { Moment } from "moment";
-import React from "react";
+import { DatePicker } from "antd";
+import moment from "moment";
 import styled from "styled-components";
-import { RangeValue } from '../../../node_modules/rc-picker/lib/interface'
+import { RangeValue } from "../../../node_modules/rc-picker/lib/interface";
 
 const { RangePicker } = DatePicker;
 const dateFormat = "MM-DD-YYYY";
@@ -22,6 +21,7 @@ const IsRequired = styled.div`
 type Props = {
   title: string;
   isRequired: boolean;
+  value?: IRegisterDate;
   onChangeHandler(value: IRegisterDate): void;
 };
 
@@ -30,7 +30,17 @@ export interface IRegisterDate {
   endTime: string | undefined;
 }
 
-function DateField({ title, isRequired, onChangeHandler }: Props) {
+function DateField({ title, isRequired, value, onChangeHandler }: Props) {
+
+  const createRangeMomentValue = (
+    data?: IRegisterDate
+  ): RangeValue<moment.Moment> => {
+    if (!data) return [null, null];
+    return [
+      moment(data.startTime, "YYYY-MM-DD"),
+      moment(data.endTime, "YYYY-MM-DD"),
+    ];
+  };
   const onChange = (range: RangeValue<moment.Moment>) => {
     if (range) {
       onChangeHandler({
@@ -38,8 +48,8 @@ function DateField({ title, isRequired, onChangeHandler }: Props) {
         endTime: range[1]?.format().split("T")[0],
       });
     }
-  }
-  
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -48,6 +58,7 @@ function DateField({ title, isRequired, onChangeHandler }: Props) {
       </TitleContainer>
 
       <RangePicker
+        value={createRangeMomentValue(value)}
         format={dateFormat}
         onChange={onChange}
       />

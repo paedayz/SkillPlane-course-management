@@ -3,7 +3,7 @@ import { Tooltip, Button, Modal, TimePicker } from "antd";
 import moment, { Moment } from "moment";
 import React, { useState } from "react";
 import styled from "styled-components";
-import AddCourseForm from "./add.course.form";
+import CreateCourseForm from "./create.course.form";
 
 const Container = styled.div`
   position: fixed;
@@ -67,7 +67,7 @@ function AddCrouseButton({}: Props) {
         bodyStyle={{ padding: '0' }}
         style={{padding:0}}
       >
-        <AddCourseForm />
+        <CreateCourseForm closeModal={handleModalCancel} />
       </Modal>
     </Container>
   );

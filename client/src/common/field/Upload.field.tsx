@@ -20,11 +20,11 @@ type Props = {
   title: string;
   max ?: number;
   isRequired: boolean;
-  onChangeHandler(data: UploadFile[]) : void;
+  fileList:UploadFile[];
+  setFileList: Function;
 };
 
-const UploadField = ({ title, isRequired, max = 1, onChangeHandler }: Props) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+const UploadField = ({ title, isRequired, max = 1, fileList, setFileList }: Props) => {
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -59,7 +59,6 @@ const UploadField = ({ title, isRequired, max = 1, onChangeHandler }: Props) => 
           onChange={onChange}
           onPreview={onPreview}
           customRequest={async (options: any) => {
-            onChangeHandler(fileList)
             options.onSuccess("Ok");
           }}
         >

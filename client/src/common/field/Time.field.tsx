@@ -18,11 +18,19 @@ const IsRequired = styled.div`
 type Props = {
   title: string;
   isRequired: boolean;
+  value: number;
   onChangeHandler(value: number): void;
 };
 
-function TimeField({ title, isRequired, onChangeHandler }: Props) {
-  const onChange = (_: Moment | null, timeString: string) => {
+function TimeField({ title, isRequired, value, onChangeHandler }: Props) {
+    const secondToTimestring = (second: number) => {
+        const date = new Date(0);
+        date.setSeconds(second); 
+        const timeString = date.toISOString().substr(11, 8);
+        return timeString
+    }
+  
+    const onChange = (_: Moment | null, timeString: string) => {
     if (timeString) {
       const [hours, minutes, seconds] = timeString.split(":");
       const totalSeconds = +hours * 60 * 60 + +minutes * 60 + +seconds;
@@ -39,9 +47,9 @@ function TimeField({ title, isRequired, onChangeHandler }: Props) {
       </TitleContainer>
 
       <TimePicker
+        value={moment(secondToTimestring(value), "HH:mm:ss")}
         showNow={false}
         onChange={onChange}
-        defaultValue={moment("00:00:00", "HH:mm:ss")}
       />
     </Container>
   );

@@ -47,6 +47,10 @@ export const courseSlice = createSlice({
       state.courses = ([] as ICourse[]).concat(state.courses, action.payload);
       state.skip = state.skip + state.take;
     },
+    createdCourse: (state, action) => {
+      console.log("addCourse >>>> ", action.payload);
+      state.courses = ([] as ICourse[]).concat([action.payload], state.courses);
+    },
     resetBeforeQueryGet: (state) => {
       state.skip = 0;
       state.courses = [];
@@ -105,6 +109,7 @@ export const courseSlice = createSlice({
 
 export const {
   addCourse,
+  createdCourse,
   resetBeforeQueryGet,
   setInitialLoading,
   setPaginationLoading,

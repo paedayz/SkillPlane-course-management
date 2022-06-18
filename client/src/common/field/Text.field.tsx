@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-    margin-top: 15px;
-`
+  margin-top: 15px;
+`;
 
 const TitleContainer = styled.div`
   display: flex;
@@ -19,16 +19,18 @@ type Props = {
   placeholder?: string;
   isRequired: boolean;
   type: "number" | "text";
-  defaultValue? : string| number;
+  defaultValue?: string | number;
+  value: string | number;
   onChangeHandler(value: string | number): void;
 };
 
 function TextField({
   title,
-  placeholder = 'type here',
+  placeholder = "type here",
   isRequired,
   type,
   defaultValue,
+  value,
   onChangeHandler,
 }: Props) {
   return (
@@ -39,6 +41,7 @@ function TextField({
       </TitleContainer>
 
       <Input
+        value={value}
         type={type}
         placeholder={placeholder}
         defaultValue={defaultValue}
