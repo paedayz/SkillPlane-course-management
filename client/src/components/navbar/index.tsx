@@ -54,6 +54,10 @@ const Logo = styled.img`
     height: 50%;
     margin-left: 20px;
   }
+
+  @media ${device.mobile} {
+    display: none;
+  }
 `;
 
 const SearchBox = styled(Search)`
@@ -62,6 +66,10 @@ const SearchBox = styled(Search)`
   @media ${device.ipad} {
     width: 200px;
   }
+
+  @media ${device.mobile} {
+    width: 140px;
+  }
 `;
 
 const SliderContainer = styled.div`
@@ -69,6 +77,10 @@ const SliderContainer = styled.div`
   margin-right: 10px;
   @media ${device.ipad} {
     width: 150px;
+  }
+
+  @media ${device.mobile} {
+    width: 100px;
   }
 `;
 

@@ -72,6 +72,11 @@ const CourseImage = styled.img`
     margin-left: 10px;
     border-radius: 10px;
   }
+
+  @media ${device.mobile} {
+    height: 90%;
+    width: 160px;
+  }
 `;
 
 const CourseFlipImage = styled.img`
@@ -85,11 +90,24 @@ const CourseFlipImage = styled.img`
     margin-left: 10px;
     border-radius: 10px;
   }
+
+  @media ${device.mobile} {
+    height: 90%;
+    width: 160px;
+  }
 `;
 
 const CourseName = styled.div`
   margin-top: 10px;
   font-size: 20px;
+  @media ${device.mobile} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    height: 28px;
+  }
 `;
 
 const CourseDescription = styled.div`
@@ -103,6 +121,13 @@ const CourseDescription = styled.div`
   @media ${device.ipad} {
     width: 65%;
   }
+
+  @media ${device.mobile} {
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    height: 45px;
+    width: 100%;
+  }
 `;
 
 const CourseRegisTimes = styled.div`
@@ -112,6 +137,12 @@ const CourseRegisTimes = styled.div`
     text-align: right;
     font-size: 13px;
     margin-top: 0;
+  }
+
+  @media ${device.mobile} {
+    text-align: right;
+    font-size: 13px;
+    margin-top: 20px;
   }
 `;
 
@@ -187,7 +218,7 @@ function CourseCard({ data }: Props) {
         </div>
 
         <div className="flip-card-back">
-          {userRole === 'admin' && <CourseDeleteButton courseId={id} />}
+          {userRole === "admin" && <CourseDeleteButton courseId={id} />}
 
           <CourseFlipImage src={image} />
           <FlipDetailContainer>
