@@ -1,7 +1,9 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Tooltip, Button, Modal } from "antd";
+import { Tooltip, Button, Modal, TimePicker } from "antd";
+import moment, { Moment } from "moment";
 import React, { useState } from "react";
 import styled from "styled-components";
+import AddCourseForm from "./add.course.form";
 
 const Container = styled.div`
   position: fixed;
@@ -25,8 +27,6 @@ const Container = styled.div`
 const AddButton = styled(Button)`
   background-color: #92e692;
   color: white;
-
-  
 `;
 
 type Props = {};
@@ -38,13 +38,14 @@ function AddCrouseButton({}: Props) {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleModalOk = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
+  const handleModalCancel = () => {
     setIsModalVisible(false);
   };
+  
   return (
     <Container>
       <Tooltip title="Add Course">
@@ -56,15 +57,17 @@ function AddCrouseButton({}: Props) {
           icon={<PlusOutlined />}
         />
       </Tooltip>
+
       <Modal
-        title="Basic Modal"
+        title="Add Course"
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        footer={null}
+        bodyStyle={{ padding: '0' }}
+        style={{padding:0}}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <AddCourseForm />
       </Modal>
     </Container>
   );
