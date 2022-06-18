@@ -15,7 +15,6 @@ export const getCourse = async (
     const queryKeyword = keyword ? `&keyword=${keyword}` : "";
     const queryMinDuration = minDuration ? `&minDuration=${minDuration}` : "";
     const queryMaxDuration = maxDuration ? `&maxDuration=${maxDuration}` : "";
-
     const accessToken = await getAccessToken();
     const res = await appAxios.get(
       `/course${queryTake}${querySkip}${queryKeyword}${queryMinDuration}${queryMaxDuration}`,

@@ -10,9 +10,11 @@ import { device } from "../../constants";
 import {
   addCourse,
   resetBeforeQueryGet,
+  resetCourseSlice,
   setInitialLoading,
   setQueryParams,
 } from "../../slices/course.slice";
+import { resetUserSlice } from "../../slices/user.slice";
 
 const { Search } = Input;
 
@@ -133,7 +135,11 @@ function Navbar({
 
   const onclickLogout = async () => {
     const res = await logout();
-    if (res) history.push("/login");
+    if (res) {
+      history.push("/login");
+      dispatch(resetUserSlice())
+      dispatch(resetCourseSlice())
+    }
   };
 
   const getData = async () => {

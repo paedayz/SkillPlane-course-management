@@ -1,4 +1,4 @@
-import {  createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 
 export interface IUserState {
@@ -50,7 +50,9 @@ export const courseSlice = createSlice({
       state.courses = ([] as ICourse[]).concat([action.payload], state.courses);
     },
     deletedCourse: (state, action) => {
-      state.courses = state.courses.filter(course => course.id !== action.payload)
+      state.courses = state.courses.filter(
+        (course) => course.id !== action.payload
+      );
     },
     resetBeforeQueryGet: (state) => {
       state.skip = 0;
@@ -101,6 +103,13 @@ export const courseSlice = createSlice({
     setPaginationLoading: (state, action) => {
       state.paginationLoading = action.payload;
     },
+    resetCourseSlice: (state) => {
+      state.courses = []
+      state.skip = 0
+      state.maxDuration = undefined
+      state.minDuration = undefined
+      state.keyword = undefined
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -113,6 +122,7 @@ export const {
   setInitialLoading,
   setPaginationLoading,
   setQueryParams,
+  resetCourseSlice,
 } = courseSlice.actions;
 
 export const selectSkip = (state: RootState) => state.course.skip;

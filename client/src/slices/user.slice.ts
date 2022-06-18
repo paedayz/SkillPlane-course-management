@@ -24,7 +24,6 @@ const initialState: IUserState = {
 //   }
 // );
 
-
 // export const registerAsync = createAsyncThunk(
 //   "user/register",
 //   async (data: IRegisterBody) => {
@@ -54,14 +53,20 @@ export const userSlice = createSlice({
         state.role = decode.role;
         state.username = decode.username;
       } else {
-        state = initialState;
+        state.authenticated = false;
+        state.role = undefined;
+        state.username = undefined;
       }
+    },
+    resetUserSlice: (state) => {
+      state.authenticated = false;
+      state.role = undefined;
+      state.username = undefined;
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const {setCredentials} = userSlice.actions
+export const { setCredentials, resetUserSlice } = userSlice.actions;
 
-
-export default userSlice.reducer
+export default userSlice.reducer;

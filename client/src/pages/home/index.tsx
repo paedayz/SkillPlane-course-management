@@ -71,7 +71,7 @@ function Homepage(prps: Props) {
   const initialCourseData = async () => {
     const resCourse = await getCourse(
       take,
-      skipRef.current,
+      skip,
       keywordRef.current,
       minDurationRef.current,
       maxDurationRef.current
