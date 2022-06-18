@@ -14,7 +14,7 @@ export class CourseController {
     next: NextFunction
   ): Promise<IResCourseDetail| Error> {
     let createCourseData: CreateCourseBodyDto = request.body;
-
+    
     createCourseData.image = {
       buffer: request.file?.buffer,
       originalName: request.file?.originalname,

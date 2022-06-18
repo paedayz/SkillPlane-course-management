@@ -13,7 +13,10 @@ export class CourseService implements ICourseService {
     this.storage = new StorageService(firebaseApp);
   }
 
-  async deleteCourse(username: string, courseId: number): Promise<string | Error> {
+  async deleteCourse(
+    username: string,
+    courseId: number
+  ): Promise<string | Error> {
     try {
       const courseData = await this.courseRepository.findOneBy({
         id: courseId,
@@ -48,8 +51,8 @@ export class CourseService implements ICourseService {
     createdBy: string
   ): Promise<IResCourseDetail | Error> {
     try {
-      if(!image.buffer) return new Error('Image not found')
-      
+      if (!image.buffer) return new Error("Image not found");
+
       const storagePath = await this.storage.saveSingleFile(image);
 
       const courseDetail = await this.courseRepository.save({
@@ -81,11 +84,13 @@ export class CourseService implements ICourseService {
   ): Promise<IResCourseDetail[] | Error> {
     try {
       const queryKeyword = keyword ? keyword.toLowerCase() : "";
-      const queryKeywordString = keyword ? '(LOWER(Course.name) LIKE :keyword OR LOWER(Course.description) LIKE :keyword)' : '';
+      const queryKeywordString = keyword
+        ? "(LOWER(Course.name) LIKE :keyword OR LOWER(Course.description) LIKE :keyword)"
+        : "";
 
       const queryMinDuration = minDuration || 0;
       const queryMaxDuration = maxDuration || 90000000;
-      const queryDurationString = 'Course.duration BETWEEN :min AND :max'
+      const queryDurationString = "Course.duration BETWEEN :min AND :max";
 
       const queryTake = take || 10;
       const querySkip = skip || 0;
@@ -101,11 +106,12 @@ export class CourseService implements ICourseService {
         })
         .take(queryTake)
         .skip(querySkip)
+        .orderBy("Course.createdAt", "DESC")
         .getMany();
 
       return courses;
     } catch (error) {
-      return new Error(error.message)
+      return new Error(error.message);
     }
   }
 }
