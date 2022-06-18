@@ -26,7 +26,7 @@ const CourseCardContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 70px;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     display: block;
   }
 `;

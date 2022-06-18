@@ -5,11 +5,9 @@ const size = {
 };
 
 export const device: {
-    xs: string,
-    sm: string,
-    lg: string,
+    mobile: string,
+    ipad: string,
 } = {
-  xs: `(max-width: ${size.xs})`,
-  sm: `(max-width: ${size.sm})`,
-  lg: `(max-width: ${size.lg})`,
+  mobile: `(max-width: ${size.sm})`,
+  ipad: `(max-width: ${size.lg})`,
 };

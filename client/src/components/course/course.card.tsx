@@ -13,7 +13,7 @@ const Container = styled.div`
   cursor: pointer;
   user-select: none;
 
-  @media ${device.lg} {
+  @media ${device.ipad} {
     width: 100%;
     height: 200px;
     display: flex;
@@ -30,7 +30,7 @@ const Container = styled.div`
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    @media ${device.lg} {
+    @media ${device.ipad} {
       width: 100%;
       display: flex;
     }
@@ -57,7 +57,7 @@ const FlipCardInner = styled.div`
   transition: transform 1.5s;
   transform-style: preserve-3d;
 
-  @media ${device.lg} {
+  @media ${device.ipad} {
     width: 100%;
     display: flex;
   }
@@ -66,7 +66,7 @@ const FlipCardInner = styled.div`
 const CourseImage = styled.img`
   width: 230px;
   object-fit: cover;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     height: 90%;
     width: 300px;
     margin-left: 10px;
@@ -79,7 +79,7 @@ const CourseFlipImage = styled.img`
   object-fit: cover;
   transform: scaleX(-1);
   opacity: 50%;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     height: 90%;
     width: 300px;
     margin-left: 10px;
@@ -100,7 +100,7 @@ const CourseDescription = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     width: 65%;
   }
 `;
@@ -108,7 +108,7 @@ const CourseDescription = styled.div`
 const CourseRegisTimes = styled.div`
   font-size: 10px;
   margin-top: 25px;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     text-align: right;
     font-size: 13px;
     margin-top: 0;
@@ -120,7 +120,7 @@ const CourseDuration = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  @media ${device.lg} {
+  @media ${device.ipad} {
     text-align: left;
     margin-left: 20px;
     width: 100%;
@@ -128,7 +128,7 @@ const DetailContainer = styled.div`
   }
 `;
 const FlipDetailContainer = styled.div`
-  @media ${device.lg} {
+  @media ${device.ipad} {
     text-align: left;
     margin-left: 20px;
     width: 100%;

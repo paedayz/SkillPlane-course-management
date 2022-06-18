@@ -40,7 +40,7 @@ const RightContainer = styled.div`
   margin-left: auto;
   margin-right: 20px;
   justify-content: right;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     font-size: 10px;
     justify-content: center;
   }
@@ -50,7 +50,7 @@ const Logo = styled.img`
   height: 90%;
   margin-left: 20px;
 
-  @media ${device.lg} {
+  @media ${device.ipad} {
     height: 50%;
     margin-left: 20px;
   }
@@ -59,7 +59,7 @@ const Logo = styled.img`
 const SearchBox = styled(Search)`
   width: 250px;
   margin-right: 10px;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     width: 200px;
   }
 `;
@@ -67,7 +67,7 @@ const SearchBox = styled(Search)`
 const SliderContainer = styled.div`
   width: 300px;
   margin-right: 10px;
-  @media ${device.lg} {
+  @media ${device.ipad} {
     width: 150px;
   }
 `;
@@ -82,7 +82,7 @@ const FilterContainer = styled.div`
 `;
 
 const LogoutButton = styled(Button)`
-  @media ${device.lg} {
+  @media ${device.ipad} {
     font-size: 10px;
     width: 60px;
     height: 25px;
