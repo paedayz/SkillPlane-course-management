@@ -12,7 +12,7 @@ export interface ICourseService {
     duration: number,
     numberOfStudent: number,
     createdBy: string,
-  ): Promise<IResCourseDetail>;
+  ): Promise<IResCourseDetail | Error>;
 
   getCourses(
     keyword?: string,
@@ -20,12 +20,12 @@ export interface ICourseService {
     maxDuration?: number,
     take?: number,
     skip?: number,
-  ) : Promise<IResCourseDetail[]>
+  ) : Promise<IResCourseDetail[] | Error>
 
   deleteCourse(
     username: string,
     courseId: number,
-  ) : Promise<string>
+  ) : Promise<string  | Error>
 }
 
 export interface IResCourseDetail {

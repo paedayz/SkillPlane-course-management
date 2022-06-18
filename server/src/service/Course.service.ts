@@ -13,15 +13,15 @@ export class CourseService implements ICourseService {
     this.storage = new StorageService(firebaseApp);
   }
 
-  async deleteCourse(username: string, courseId: number): Promise<string> {
+  async deleteCourse(username: string, courseId: number): Promise<string | Error> {
     try {
       const courseData = await this.courseRepository.findOneBy({
         id: courseId,
       });
 
-      if (!courseData) throw Error("Course not found");
+      if (!courseData) return new Error("Course not found");
 
-      if (courseData.createdBy !== username) throw Error("No permission");
+      if (courseData.createdBy !== username) return new Error("No permission");
 
       const allPromise = [
         this.courseRepository.delete({ id: courseId }),
@@ -31,8 +31,7 @@ export class CourseService implements ICourseService {
       const returnData = await Promise.all(allPromise);
       return "Delete success";
     } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
+      return new Error(error.message);
     }
   }
 
@@ -47,8 +46,10 @@ export class CourseService implements ICourseService {
     duration: number,
     numberOfStudent: number,
     createdBy: string
-  ): Promise<IResCourseDetail> {
+  ): Promise<IResCourseDetail | Error> {
     try {
+      if(!image.buffer) return new Error('Image not found')
+      
       const storagePath = await this.storage.saveSingleFile(image);
 
       const courseDetail = await this.courseRepository.save({
@@ -68,8 +69,7 @@ export class CourseService implements ICourseService {
         ...courseDetail,
       };
     } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
+      return new Error(error.message);
     }
   }
   async getCourses(
@@ -78,7 +78,7 @@ export class CourseService implements ICourseService {
     maxDuration?: number,
     take?: number,
     skip?: number
-  ): Promise<IResCourseDetail[]> {
+  ): Promise<IResCourseDetail[] | Error> {
     try {
       const queryKeyword = keyword ? keyword.toLowerCase() : "";
       const queryKeywordString = keyword ? '(LOWER(Course.name) LIKE :keyword OR LOWER(Course.description) LIKE :keyword)' : '';
@@ -105,7 +105,7 @@ export class CourseService implements ICourseService {
 
       return courses;
     } catch (error) {
-      console.log(error);
+      return new Error(error.message)
     }
   }
 }

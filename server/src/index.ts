@@ -5,14 +5,14 @@ import { AppDataSource } from "./data-source";
 import Routes from "./routes";
 import AuthMiddleware from "./middleware/Auth.middleware";
 import { upload } from "./middleware/Multer.middleware";
-import * as cors from 'cors'
+import * as cors from "cors";
 
 AppDataSource.initialize()
   .then(async () => {
     // create express app
     const app = express();
     app.use(bodyParser.json());
-    app.use(cors())
+    app.use(cors());
 
     // register express routes from defined application routes
     Routes.forEach((route) => {
@@ -27,18 +27,18 @@ AppDataSource.initialize()
             res,
             next
           );
-          try {
-            if (result instanceof Promise) {
-              result.then((result) =>
-                result !== null && result !== undefined
-                  ? res.send(result)
-                  : undefined
-              );
-            } else if (result !== null && result !== undefined) {
-              res.json(result);
-            }
-          } catch (error) {
-            res.status(500).json(error.message)
+          if (result instanceof Promise) {
+            result.then((result) => {
+              if(result instanceof  Error) {
+                return res.status(500).json({error: result.message})
+              }
+
+              return result !== null && result !== undefined
+                ? res.send(result)
+                : undefined;
+            });
+          } else if (result !== null && result !== undefined) {
+            res.json(result);
           }
         }
       );

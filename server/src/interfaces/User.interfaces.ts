@@ -11,11 +11,11 @@ export interface IUserService {
     nickname: string,
     birthday: Date,
     gender: string
-  ): Promise<ITokens>;
-  login(username: string, password: string): Promise<ITokens>;
-  getUserCredentials(username: string): Promise<IUserCredentials>;
-  refreshToken(refreshToken: string, username: string): Promise<ITokens>;
-  logout(username: string): Promise<string>;
+  ): Promise<ITokens | Error>;
+  login(username: string, password: string): Promise<ITokens| Error>;
+  getUserCredentials(username: string): Promise<IUserCredentials| Error>;
+  refreshToken(refreshToken: string, username: string): Promise<ITokens| Error>;
+  logout(username: string): Promise<string| Error>;
 }
 
 export interface ISaveUserEntity {

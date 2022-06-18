@@ -17,9 +17,9 @@ export class UserService implements IUserService {
     nickname: string,
     birthday: Date,
     gender: string
-  ): Promise<ITokens> {
+  ): Promise<ITokens | Error> {
     try {
-      if (password !== confirmPassword) throw new Error("Password not match");
+      if (password !== confirmPassword) return new Error("Password not match");
 
       const role = "user";
 
@@ -44,19 +44,19 @@ export class UserService implements IUserService {
       return tokens;
     } catch (error) {
       console.log(error);
-      throw new Error(error.message)
+      return new Error(error.message)
     }
   }
 
-  async login(username: string, password: string): Promise<ITokens> {
+  async login(username: string, password: string): Promise<ITokens | Error> {
     const user = await this.userRepository.findOne({
       where: [{ username }],
     });
 
-    if (!user) throw new Error("User not found");
+    if (!user) return new Error("User not found");
 
     const passwordmatches = await bcrypt.compare(password, user.hashPassword);
-    if (!passwordmatches) throw new Error("Password not matches");
+    if (!passwordmatches) return new Error("Password not matches");
 
     const tokens = await this.getTokens(user.username, user.role);
     await this.updateRefreshTokenHash(user.username, tokens.refreshToken);
@@ -64,12 +64,12 @@ export class UserService implements IUserService {
     return tokens;
   }
 
-  async getUserCredentials(username: string): Promise<IUserCredentials> {
+  async getUserCredentials(username: string): Promise<IUserCredentials | Error> {
     const user = await this.userRepository.findOne({
         where: [{ username }],
       });
   
-      if (!user) throw new Error("User not found");
+      if (!user) return new Error("User not found");
 
       const userCredentials: IUserCredentials = {
         username: user.username,
@@ -84,7 +84,7 @@ export class UserService implements IUserService {
       return userCredentials
   }
 
-  async refreshToken(refreshToken: string, username: string): Promise<ITokens> {
+  async refreshToken(refreshToken: string, username: string): Promise<ITokens | Error> {
     try {
       const user = await this.userRepository.findOne({
         where: {
@@ -92,13 +92,13 @@ export class UserService implements IUserService {
         },
       });
       if (!user || !user.hashRefreshToken || !refreshToken)
-        throw new Error("Access Denied");
+        return new Error("Access Denied");
 
       const rtMatches = await bcrypt.compare(
         refreshToken,
         user.hashRefreshToken
       );
-      if (!rtMatches) throw new Error("Access Denied");
+      if (!rtMatches) return new Error("Access Denied");
 
       const tokens = await this.getTokens(user.username, user.role);
       await this.updateRefreshTokenHash(user.username, tokens.refreshToken);
@@ -106,11 +106,11 @@ export class UserService implements IUserService {
       return tokens;
     } catch (error) {
       console.log(error)
-      throw new Error(error.message);
+      return new Error(error.message);
     }
   }
 
-  async logout(username: string): Promise<string> {
+  async logout(username: string): Promise<string | Error> {
     try {
       await this.userRepository.update(
         {
@@ -123,7 +123,7 @@ export class UserService implements IUserService {
       return "Logout successfully";
     } catch (error) {
       console.log(error.message);
-      throw new Error(error.message);
+      return new Error(error.message);
     }
   }
 

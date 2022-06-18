@@ -10,7 +10,7 @@ export class UserController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<ITokens> {
+  ): Promise<ITokens| Error> {
     const body: RegisterBodyDto = request.body;
     return await this.userService.register(
       body.username,
@@ -28,7 +28,7 @@ export class UserController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<ITokens> {
+  ): Promise<ITokens | Error> {
     const body: LoginBodyDto = request.body;
     return await this.userService.login(body.username, body.password);
   }
@@ -46,7 +46,7 @@ export class UserController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<ITokens> {
+  ): Promise<ITokens | Error> {
     const body: RefreshTokenBodyDto = request.body;
     return await this.userService.refreshToken(
       body.refreshToken,
@@ -58,7 +58,7 @@ export class UserController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<string> {
+  ): Promise<string | Error> {
     return await this.userService.logout(request["user"].username);
   }
 }

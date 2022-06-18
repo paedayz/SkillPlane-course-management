@@ -12,7 +12,7 @@ export class CourseController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<IResCourseDetail> {
+  ): Promise<IResCourseDetail| Error> {
     let createCourseData: CreateCourseBodyDto = request.body;
 
     createCourseData.image = {
@@ -38,7 +38,7 @@ export class CourseController {
     request: Request,
     response: Response,
     next: NextFunction
-  ): Promise<string> {
+  ): Promise<string| Error> {
     if (!request.params.courseId) throw Error("Course id not found");
 
     const username = request["user"].username;
