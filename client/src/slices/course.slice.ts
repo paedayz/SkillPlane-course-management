@@ -65,20 +65,17 @@ export const courseSlice = createSlice({
       state.minDuration = action.payload.minDuration;
       state.maxDuration = action.payload.maxDuration;
 
-      const queryKeyword =
-        action.payload.keyword !== undefined
-          ? `keyword=${action.payload.keyword}`
-          : "";
+      const queryKeyword = action.payload.keyword
+        ? `keyword=${action.payload.keyword}`
+        : "";
 
-      const queryMinDuration =
-        action.payload.minDuration !== undefined
-          ? `minDuration=${action.payload.minDuration}`
-          : "";
+      const queryMinDuration = action.payload.minDuration
+        ? `minDuration=${action.payload.minDuration}`
+        : "";
 
-      const queryMaxDuration =
-        action.payload.maxDuration !== undefined
-          ? `maxDuration=${action.payload.maxDuration}`
-          : "";
+      const queryMaxDuration = action.payload.maxDuration
+        ? `maxDuration=${action.payload.maxDuration}`
+        : "";
 
       let queryString = "?";
       let count = 0;
@@ -104,11 +101,11 @@ export const courseSlice = createSlice({
       state.paginationLoading = action.payload;
     },
     resetCourseSlice: (state) => {
-      state.courses = []
-      state.skip = 0
-      state.maxDuration = undefined
-      state.minDuration = undefined
-      state.keyword = undefined
+      state.courses = [];
+      state.skip = 0;
+      state.maxDuration = undefined;
+      state.minDuration = undefined;
+      state.keyword = undefined;
     },
   },
   extraReducers: (builder) => {},

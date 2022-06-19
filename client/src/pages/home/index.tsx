@@ -18,7 +18,7 @@ import {
 // styled
 const Container = styled.div`
   width: 100%;
-  padding: 50px 20px 20px 20px;
+  padding: 50px 20px 300px 20px;
 `;
 
 const CourseCardContainer = styled.div`
@@ -39,7 +39,7 @@ const SpinnerContainer = styled.div`
 
 type Props = {};
 
-function Homepage(prps: Props) {
+function Homepage(_: Props) {
   // useState
   const initialLoading = useAppSelector((state) => state.course.initialLoading);
   const paginationLoading = useAppSelector(
@@ -69,6 +69,7 @@ function Homepage(prps: Props) {
 
   // Functions and constant
   const initialCourseData = async () => {
+    dispatch(setInitialLoading(true));
     const resCourse = await getCourse(
       take,
       skip,
@@ -105,18 +106,9 @@ function Homepage(prps: Props) {
       dispatch(setPaginationLoading(false));
 
       document.body.style.overflow = "visible";
-    }, 2000);
+    }, 1000);
   };
-
-  const renderCourseCard =
-    courses.length > 0 ? (
-      courses.map((course) => {
-        return <CourseCard key={Math.random()} data={course} />;
-      })
-    ) : (
-      <EmptyComponent description="No data" />
-    );
-
+  
   const handleNavigation = (e: Event) => {
     setScrolling(window.scrollY);
     if (
@@ -153,7 +145,22 @@ function Homepage(prps: Props) {
       })
     );
   };
-  
+
+  const renderCourseCard =
+    courses.length > 0 ? (
+      courses.map((course) => {
+        return <CourseCard key={Math.random()} courseData={course} />;
+      })
+    ) : (
+      <EmptyComponent description="No data" />
+    );
+
+  const renderLoadingElement = (
+    <SpinnerContainer>
+      <Spin size="large" />
+    </SpinnerContainer>
+  );
+
   // useEffect
   useEffect(() => {
     getSearchParams();
@@ -184,23 +191,12 @@ function Homepage(prps: Props) {
       />
 
       <CourseCardContainer>
-        {!initialLoading ? (
-          renderCourseCard
-        ) : (
-          <SpinnerContainer>
-            <Spin size="large" />
-          </SpinnerContainer>
-        )}
+        {!initialLoading ? renderCourseCard : renderLoadingElement}
       </CourseCardContainer>
 
-      {paginationLoading && (
-        <SpinnerContainer>
-          <Spin size="large" />
-        </SpinnerContainer>
-      )}
-      {userRole === "admin" && <AddCrouseButton />}
+      {paginationLoading && renderLoadingElement}
 
-      <div style={{ marginBottom: "300px" }} />
+      {userRole === "admin" && <AddCrouseButton />}
     </Container>
   );
 }

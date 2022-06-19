@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { login, logout, register } from "../api";
+import { createSlice } from "@reduxjs/toolkit";
 import { LOCALSTORAGE_AC_TOKEN_KEY } from "../constants";
-import { IDecodeToken, ILoginBody, IRegisterBody } from "../interfaces";
+import { IDecodeToken } from "../interfaces";
 import jwt_decode from "jwt-decode";
 
 export interface IUserState {
@@ -16,39 +15,21 @@ const initialState: IUserState = {
   username: undefined,
 };
 
-// export const loginAsync = createAsyncThunk(
-//   "user/login",
-//   async (data: ILoginBody) => {
-//     const res = await login(data.username, data.password);
-//     return res;
-//   }
-// );
-
-// export const registerAsync = createAsyncThunk(
-//   "user/register",
-//   async (data: IRegisterBody) => {
-//     const res = await register(
-//       data.username,
-//       data.password,
-//       data.confirmPassword
-//     );
-//     return res;
-//   }
-// );
-
-// export const logoutAsync = createAsyncThunk("user/logout", async () => {
-//   const res = await logout();
-//   return res;
-// });
-
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setCredentials: (state) => {
-      const accessToken = localStorage.getItem(LOCALSTORAGE_AC_TOKEN_KEY);
-      if (accessToken) {
-        const decode: IDecodeToken = jwt_decode(accessToken);
+      const refreshToken = localStorage.getItem(LOCALSTORAGE_AC_TOKEN_KEY);
+      let canAccess = false;
+
+      if (!refreshToken) return;
+
+      const decode: IDecodeToken = jwt_decode(refreshToken);
+      const isExpire = decode.exp * 1000 < Date.now();
+      canAccess = !isExpire ? true : false;
+
+      if (canAccess) {
         state.authenticated = true;
         state.role = decode.role;
         state.username = decode.username;
