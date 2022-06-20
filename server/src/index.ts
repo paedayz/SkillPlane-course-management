@@ -7,7 +7,7 @@ import AuthMiddleware from "./middleware/Auth.middleware";
 import { upload } from "./middleware/Multer.middleware";
 import * as cors from "cors";
 
-require('dotenv').config()
+require("dotenv").config();
 
 AppDataSource.initialize()
   .then(async () => {
@@ -15,6 +15,10 @@ AppDataSource.initialize()
     const app = express();
     app.use(bodyParser.json());
     app.use(cors());
+
+    app.get("/", (request: Request, response: Response, next: NextFunction) => {
+      response.send("SkillPlane Server is running");
+    });
 
     // register express routes from defined application routes
     Routes.forEach((route) => {
@@ -31,8 +35,8 @@ AppDataSource.initialize()
           );
           if (result instanceof Promise) {
             result.then((result) => {
-              if(result instanceof  Error) {
-                return res.status(500).json({error: result.message})
+              if (result instanceof Error) {
+                return res.status(500).json({ error: result.message });
               }
 
               return result !== null && result !== undefined
@@ -50,7 +54,7 @@ AppDataSource.initialize()
     app.listen(process.env.PORT || 3001);
 
     console.log(
-      "Express server has started on port 3001. Open http://localhost:3001 to see results"
+      `Express server has started on port ${process.env.PORT || 3001}. Open http://localhost:${process.env.PORT || 3001} to see results`
     );
   })
   .catch((error) => console.log(error));
