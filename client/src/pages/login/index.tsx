@@ -11,7 +11,7 @@ import { device } from "../../constants";
 // styled
 const Container = styled.div`
   text-align: center;
-  background-color: #d9daff;
+  background-color: #ceefff;
   width: 100%;
   height: 100vh;
 `;

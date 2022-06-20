@@ -9,7 +9,7 @@ import { setCredentials } from "../../slices/user.slice";
 // styled
 const Container = styled.div`
   text-align: center;
-  background-color: #d9daff;
+  background-color: #ceefff;
   width: 100%;
   height: 110vh;
   @media ${device.mobile} {
@@ -59,21 +59,21 @@ export const InputForm = styled(Input)`
   border-radius: 30px;
   height: 45px;
   font-size: 24px;
-  border-color: #a2b4fa;
+  border-color: #90d4ff;
 `;
 
 export const InputPassword = styled(Input.Password)`
   border-radius: 30px;
   height: 45px;
   font-size: 24px;
-  border-color: #a2b4fa;
+  border-color: #90d4ff;
 `;
 
 export const InputConfirmPassword = styled(Input.Password)`
   border-radius: 30px;
   height: 45px;
   font-size: 24px;
-  border-color: #a2b4fa;
+  border-color: #90d4ff;
   margin-left: 8px;
   width: 98%;
 `;

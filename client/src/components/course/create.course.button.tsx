@@ -25,6 +25,8 @@ const Container = styled.div`
 `;
 
 const AddButton = styled(Button)`
+  width: 60px;
+  height: 60px;
   background-color: #92e692;
   color: white;
 `;
@@ -51,7 +53,6 @@ function AddCrouseButton({}: Props) {
       <Tooltip title="Create Course">
         <AddButton
           color="green"
-          size="large"
           onClick={showModal}
           shape="circle"
           icon={<PlusOutlined />}

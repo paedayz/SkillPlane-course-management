@@ -20,6 +20,7 @@ const CourseImage = styled.img`
 
 const CourseName = styled.div`
   margin-top: 10px;
+  font-weight: bold;
   font-size: 20px;
   @media ${device.mobile} {
     overflow: hidden;

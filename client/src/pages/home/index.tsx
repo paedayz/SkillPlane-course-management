@@ -18,7 +18,8 @@ import {
 // styled
 const Container = styled.div`
   width: 100%;
-  padding: 50px 20px 300px 20px;
+  padding: 50px 20px 350px 20px;
+  background-color: #ceefff;
 `;
 
 const CourseCardContainer = styled.div`
