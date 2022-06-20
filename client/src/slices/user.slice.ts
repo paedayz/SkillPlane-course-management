@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LOCALSTORAGE_AC_TOKEN_KEY } from "../constants";
+import { LOCALSTORAGE_RF_TOKEN_KEY } from "../constants";
 import { IDecodeToken } from "../interfaces";
 import jwt_decode from "jwt-decode";
 
@@ -20,7 +20,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state) => {
-      const refreshToken = localStorage.getItem(LOCALSTORAGE_AC_TOKEN_KEY);
+      const refreshToken = localStorage.getItem(LOCALSTORAGE_RF_TOKEN_KEY);
       let canAccess = false;
 
       if (!refreshToken) return;

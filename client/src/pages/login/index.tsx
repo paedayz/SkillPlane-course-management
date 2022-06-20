@@ -133,7 +133,7 @@ function LoginPage(props: Props) {
 
           <Form.Item>
             <ButtonLoginForm disabled={isLoading} htmlType="submit">
-              {isLoading ? <Spin indicator={antIcon}/> : "Save"}
+              {isLoading ? <Spin indicator={antIcon}/> : "Submit"}
             </ButtonLoginForm>
           </Form.Item>
         </Form>
