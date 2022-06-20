@@ -1,4 +1,5 @@
-import {Button } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import {Button, Spin } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
 import  { useState } from "react";
 import styled from "styled-components";
@@ -10,6 +11,8 @@ import TimeField from "../../common/field/Time.field";
 import UploadField from "../../common/field/Upload.field";
 import { openNotificationWithIcon } from "../../common/notification";
 import { createdCourse } from "../../slices/course.slice";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const Container = styled.div`
   height: 500px;
@@ -82,9 +85,9 @@ function CreateCourse({ closeModal }: Props) {
           "",
           "Create course successfully"
         );
-      } else {
-        setIsLoading(false);
-      }
+      } 
+
+      setIsLoading(false);
     }
   };
 
@@ -187,7 +190,7 @@ function CreateCourse({ closeModal }: Props) {
             type="primary"
             onClick={onClickSubmit}
           >
-            Save
+            {isLoading ? <Spin indicator={antIcon}/> : "Save"}
           </SaveButton>
         </ButtonContainer>
       </Content>

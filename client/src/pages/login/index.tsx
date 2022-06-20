@@ -1,12 +1,14 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Spin } from "antd";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { login } from "../../api";
 import { useAppDispatch } from "../../app/hooks";
 import { setCredentials } from "../../slices/user.slice";
-import { LockFilled, UserOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LockFilled, UserOutlined } from "@ant-design/icons";
 import { device } from "../../constants";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 // styled
 const Container = styled.div`
@@ -95,19 +97,19 @@ interface IFormInput {
 type Props = {};
 
 function LoginPage(props: Props) {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const history = useHistory();
   const onFinish = async (values: IFormInput) => {
     if (values.username && values.password) {
-      setLoading(true);
+      setIsLoading(true);
       const res = await login(values.username, values.password);
       if (!res) return;
       dispatch(setCredentials());
       history.push("/");
     }
 
-    setLoading(false);
+    setIsLoading(false);
   };
 
   return (
@@ -130,8 +132,8 @@ function LoginPage(props: Props) {
           </Form.Item>
 
           <Form.Item>
-            <ButtonLoginForm disabled={loading} htmlType="submit">
-              Submit
+            <ButtonLoginForm disabled={isLoading} htmlType="submit">
+              {isLoading ? <Spin indicator={antIcon}/> : "Save"}
             </ButtonLoginForm>
           </Form.Item>
         </Form>

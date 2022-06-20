@@ -1,10 +1,14 @@
-import { Button, DatePicker, Form, Input, Radio } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Radio, Spin } from "antd";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { register } from "../../api";
 import { useAppDispatch } from "../../app/hooks";
 import { device } from "../../constants";
 import { setCredentials } from "../../slices/user.slice";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 // styled
 const Container = styled.div`
@@ -117,9 +121,11 @@ interface IFormInput {
 type Props = {};
 
 function RegisterPage(props: Props) {
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch();
   const history = useHistory();
   const onFinish = async (values: IFormInput) => {
+    setIsLoading(true)
     const res = await register(
       values.username,
       values.password,
@@ -135,6 +141,8 @@ function RegisterPage(props: Props) {
       dispatch(setCredentials());
       history.push("/");
     }
+
+    setIsLoading(false)
   };
 
   return (
@@ -217,7 +225,9 @@ function RegisterPage(props: Props) {
           </FormItem>
 
           <FormItem>
-            <ButtonRegister htmlType="submit">Submit</ButtonRegister>
+            <ButtonRegister htmlType="submit">
+              {isLoading ? <Spin indicator={antIcon}/> : "Submit"}
+            </ButtonRegister>
           </FormItem>
         </Form>
       </BoxForm>
