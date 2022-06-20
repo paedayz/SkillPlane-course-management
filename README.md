@@ -50,14 +50,16 @@ server deploy on https://skillplange-server.herokuapp.com/
 | `/register`                                                                                                      | POST   | Public  | Register the user                                                                                                | - username (str) <br/>- password (str) <br/>- confirmPassword (str) <br/>-firstname (str)<br/>- lastname (str)<br/>- nickname (str)<br/>- birthday (str)<br/>- gender (str)                                 |
 | `/login`                                                                                                         | POST   | Public  | Log the user in                                                                                                  | username (str) <br/>-password (str)                                                                                                                                                                         |
 | `/refreshToken`                                                                                                  | POST   | Public  | Re-generate tokens                                                                                               | - username (str) <br/>- refreshToken (str)                                                                                                                                                                  |
-| `/logout`                                                                                                        | DELETE | Private |                                                                                                                  |                                                                                                                                                                                                             |
+| `/logout`                                                                                                        | DELETE | Private | Log the user out                                                                                                 |                                                                                                                                                                                                             |
 | `/course?take={takeParam}&skip={skipParam}&keyword={keywordParam}&minDuration={minParam}&maxDuration={maxParam}` | GET    | Private | Get course by using pagination technique and filter course by using keyword, minDuration, and maxDuration params |                                                                                                                                                                                                             |
 | `/course`                                                                                                        | POST   | Private | Create course                                                                                                    | Using form-data <br /> - image <br/>- name <br/>- description <br/>- category <br/>- subject <br/>- startTime (MM-DD-YYYY) <br/>- endTime (MM-DD-YYYY) <br/>- numberOfStudent <br/>- duration (second unit) |
-| `/course/:id`                                                                                                    | DELETE | Private |                                                                                                                  |
+| `/course/:id`                                                                                                    | DELETE | Private | Delete Course                                                                                                    |
+
 <br/>
 <br/>
 
 # 🌱 Project Overview Structure
+
 ```
 root
 ├───client
@@ -92,15 +94,20 @@ root
 package.json
 README.md
 ```
+
 <br/>
 
 # 🍃 Installations
+
 ## install client package
+
 ```
 cd client
 npm install
 ```
+
 ## install server package
+
 ```
 cd server
 npm install
@@ -109,6 +116,7 @@ npm install
 note : after that don't forget to create env file for client and server <br/>
 
 ## run application
+
 ```
 in root directory
 
@@ -121,5 +129,7 @@ application will run concurrently for client and server side
 <br/>
 
 # 🍏 Frameworks, library, and tools
+
 ## Frontend - react, redux-toolkit, ant-design
+
 ## Backend - express.js, jwt, firebase-admin, typeorm, postgresql
