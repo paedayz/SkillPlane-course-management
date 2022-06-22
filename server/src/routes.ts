@@ -44,10 +44,10 @@ const userRoute: IRoute[] = [
 
   {
     method: "delete",
-    route: "/logout",
+    route: "/logout/:username",
     controller: UserController,
     action: "logout",
-    role: "user",
+    role: null,
   },
 ];
 

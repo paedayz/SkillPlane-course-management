@@ -66,14 +66,9 @@ export const register = async (
   }
 };
 
-export const logout = async (): Promise<string | undefined> => {
+export const logout = async (username: string): Promise<string | undefined> => {
   try {
-    const accessToken = await getAccessToken();
-    const res = await appAxios.delete("/logout", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await appAxios.delete(`/logout/${username}`);
 
     if (!res.data) return undefined;
     localStorage.removeItem(LOCALSTORAGE_AC_TOKEN_KEY);

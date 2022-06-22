@@ -59,6 +59,7 @@ export class UserController {
     response: Response,
     next: NextFunction
   ): Promise<string | Error> {
-    return await this.userService.logout(request["user"].username);
+    const username = request.params.username
+    return await this.userService.logout(username);
   }
 }
