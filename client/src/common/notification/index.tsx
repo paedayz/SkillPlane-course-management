@@ -1,5 +1,4 @@
-import { Button, notification, Space } from 'antd';
-import React from 'react';
+import { notification } from 'antd';
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 

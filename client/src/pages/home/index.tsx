@@ -1,5 +1,5 @@
 import { Spin } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getCourse } from "../../api/course.api";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
@@ -52,12 +52,6 @@ function Homepage(_: Props) {
   const maxDuration = useAppSelector((state) => state.course.maxDuration);
   const minDuration = useAppSelector((state) => state.course.minDuration);
 
-  const takeRef = useRef(take);
-  const skipRef = useRef(skip);
-  const keywordRef = useRef(keyword);
-  const maxDurationRef = useRef(maxDuration);
-  const minDurationRef = useRef(minDuration);
-
   const [scrolling, setScrolling] = useState<number>(0);
 
   let search = window.location.search;
@@ -69,23 +63,6 @@ function Homepage(_: Props) {
   const courses = useAppSelector((state) => state.course.courses);
 
   // Functions and constant
-  const initialCourseData = async () => {
-    dispatch(setInitialLoading(true));
-    const resCourse = await getCourse(
-      take,
-      skip,
-      keywordRef.current,
-      minDurationRef.current,
-      maxDurationRef.current
-    );
-
-    if (resCourse && resCourse.length !== 0) {
-      dispatch(addCourse(resCourse));
-    }
-
-    dispatch(setInitialLoading(false));
-  };
-
   const paginationGetData = () => {
     dispatch(setPaginationLoading(true));
 
@@ -94,10 +71,10 @@ function Homepage(_: Props) {
     setTimeout(async () => {
       const resCourse = await getCourse(
         take,
-        skipRef.current,
-        keywordRef.current,
-        minDurationRef.current,
-        maxDurationRef.current
+        skip,
+        keyword,
+        minDuration,
+        maxDuration
       );
 
       if (resCourse && resCourse.length !== 0) {
@@ -109,7 +86,7 @@ function Homepage(_: Props) {
       document.body.style.overflow = "visible";
     }, 1000);
   };
-  
+
   const handleNavigation = (e: Event) => {
     setScrolling(window.scrollY);
     if (
@@ -121,6 +98,29 @@ function Homepage(_: Props) {
     }
   };
 
+  const initialCourseData = async (
+    takeQuery: number,
+    skipQuery: number,
+    keywordQuery: string | undefined,
+    minDurationQuery: number | undefined,
+    maxDurationQuery: number | undefined
+  ) => {
+    dispatch(setInitialLoading(true));
+    const resCourse = await getCourse(
+      takeQuery,
+      skipQuery,
+      keywordQuery,
+      minDurationQuery,
+      maxDurationQuery
+    );
+
+    if (resCourse && resCourse.length !== 0) {
+      dispatch(addCourse(resCourse));
+    }
+
+    dispatch(setInitialLoading(false));
+  };
+
   const getSearchParams = () => {
     let takeParams = params.get("take");
     let skipParams = params.get("skip");
@@ -128,22 +128,32 @@ function Homepage(_: Props) {
     let minDurationParams = params.get("minDuration");
     let maxDurationParams = params.get("maxDuration");
 
-    takeRef.current = takeParams ? parseInt(takeParams) : takeRef.current;
-    skipRef.current = skipParams ? parseInt(skipParams) : skipRef.current;
-    keywordRef.current = keywordParams ? keywordParams : keywordRef.current;
-    minDurationRef.current = minDurationParams
+    const takeQuery = takeParams ? parseInt(takeParams) : take;
+    const skipQuery = skipParams ? parseInt(skipParams) : skip;
+    const keywordQuery = keywordParams ? keywordParams : keyword;
+    const minDurationQuery = minDurationParams
       ? parseInt(minDurationParams)
-      : minDurationRef.current;
-    maxDurationRef.current = maxDurationParams
+      : minDuration;
+    const maxDurationQuery = maxDurationParams
       ? parseInt(maxDurationParams)
-      : maxDurationRef.current;
+      : maxDuration;
 
     dispatch(
       setQueryParams({
-        keyword: keywordRef.current,
-        minDuration: minDurationRef.current,
-        maxDuration: maxDurationRef.current,
+        take: takeQuery,
+        skip: skipQuery,
+        keyword: keywordQuery,
+        minDuration: minDurationQuery,
+        maxDuration: maxDurationQuery,
       })
+    );
+
+    initialCourseData(
+      takeQuery,
+      skipQuery,
+      keywordQuery,
+      minDurationQuery,
+      maxDurationQuery
     );
   };
 
@@ -165,20 +175,13 @@ function Homepage(_: Props) {
   // useEffect
   useEffect(() => {
     getSearchParams();
-    initialCourseData();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    skipRef.current = skip;
-    keywordRef.current = keyword;
-    minDurationRef.current = minDuration;
-    maxDurationRef.current = maxDuration;
-
-    window.addEventListener("scroll", (e) => handleNavigation(e));
-
+    window.addEventListener("scroll", handleNavigation);
     return () => {
-      return window.removeEventListener("scroll", (e) => handleNavigation(e));
+      return window.removeEventListener("scroll", handleNavigation);
     };
     // eslint-disable-next-line
   }, [scrolling]);

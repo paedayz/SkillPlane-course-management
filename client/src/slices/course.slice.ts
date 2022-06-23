@@ -106,6 +106,8 @@ export const courseSlice = createSlice({
       state.maxDuration = undefined;
       state.minDuration = undefined;
       state.keyword = undefined;
+      state.initialLoading = false;
+      state.paginationLoading = false;
     },
   },
   extraReducers: (builder) => {},

@@ -23,10 +23,6 @@ type Props = {
 function CourseDeleteButton({ courseId }: Props) {
   const dispatch = useAppDispatch();
 
-  const onClickDelete = () => {
-    
-  };
-
   const deleteCourseHandler = async () => {
     const res = await deleteCourse(courseId);
     if (res) {

@@ -1,4 +1,4 @@
-import appAxios, { getAccessToken } from "../app/axios.instance";
+import appAxios from "../app/axios.instance";
 import { openNotificationWithIcon } from "../common/notification";
 import {
   LOCALSTORAGE_AC_TOKEN_KEY,

@@ -1,7 +1,6 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Tooltip, Button, Modal, TimePicker } from "antd";
-import moment, { Moment } from "moment";
-import React, { useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { Tooltip, Button, Modal } from "antd";
+import { useState } from "react";
 import styled from "styled-components";
 import CreateCourseForm from "./create.course.form";
 
@@ -33,7 +32,7 @@ const AddButton = styled(Button)`
 
 type Props = {};
 
-function AddCrouseButton({}: Props) {
+function AddCrouseButton(_: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {

@@ -14,7 +14,12 @@ AppDataSource.initialize()
     // create express app
     const app = express();
     app.use(bodyParser.json());
-    app.use(cors());
+
+    const corsOptions: cors.CorsOptions = {
+      origin: 'https://fir-react-example-e2b28.web.app',
+      credentials: true
+    }
+    app.use(cors(corsOptions));
 
     app.get("/", (request: Request, response: Response, next: NextFunction) => {
       response.send("SkillPlane Server is running");
